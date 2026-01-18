@@ -1,0 +1,107 @@
+
+/* Minimal CSS - Uniquement pour les positions fixes */
+/* Reset et police */
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Container principal */
+.d-flex.flex-column.min-vh-100 {
+    background: transparent;
+}
+
+
+/* Header dégradé avec glassmorphism */
+header {
+    position: fixed !important;  /* IMPORTANT : fixed au lieu de sticky */
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1030;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease-in-out;
+    transform: translateY(0); /* Position par défaut */
+}
+
+/* Header caché (scroll down) */
+header.header-hidden {
+    transform: translateY(-100%) !important;
+}
+
+/* Header visible (scroll up) */
+header.header-visible {
+    transform: translateY(0) !important;
+}
+
+/* Titre principal dans le header */
+header h1 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    background: rgba(0, 0, 0, 0.3) !important;  /* Augmenté à 0.3 pour plus de contraste */
+    backdrop-filter: blur(10px);
+    margin-top: auto;
+    color: white !important;
+}
+
+footer .text-muted {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+main {
+    margin-top: 200px; /* Augmentez selon la hauteur de votre header */
+    margin-bottom: 60px;
+}
+
+/* Animations subtiles */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Cards de la section avec effet hover */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: white;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+.badge:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Section latérale sticky */
+.top-section {
+    position: sticky;
+    top: 180px;
+}
+
