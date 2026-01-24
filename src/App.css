@@ -106,3 +106,14 @@ main {
     top: 180px;
 }
 
+/* Style pour l'email cliquable */
+.email-link {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #6c757d; /* text-muted */
+}
+
+.email-link:hover {
+    color: #495057;
+}
+
