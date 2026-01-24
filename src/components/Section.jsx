@@ -11,10 +11,10 @@ function Section() {
                 <Card.Body>
                     <ul className="list-unstyled mb-0">
                         <li className="mb-2">
-                            <a href="#" className="text-decoration-none">🔗 Mon GitHub</a>
+                            <a href="https://github.com/Damz59" target="_blank" rel="noopener noreferrer" className="text-decoration-none">🔗 Mon GitHub</a>
                         </li>
                         <li className="mb-2">
-                            <a href="#" className="text-decoration-none">🔗 Mon LinkedIn</a>
+                            <a href="https://www.linkedin.com/in/damien-vandendorpe-81617824a" target="_blank" rel="noopener noreferrer" className="text-decoration-none">🔗 Mon LinkedIn</a>
                         </li>
                         <li className="mb-0">
                             <a href="#" className="text-decoration-none">📄 Télécharger mon CV</a>
@@ -30,7 +30,7 @@ function Section() {
                 </Card.Header>
                 <Card.Body>
                     <p className="small text-muted mb-1">📧 damienvdh59@gmail.com</p>
-                    <p className="small text-muted mb-0">📍 Lille, France</p>
+                    <p className="small text-muted mb-0">📍 Halluin, France</p>
                 </Card.Body>
             </Card>
             

@@ -6,17 +6,16 @@ export function useScrollDirection() {
 
     useEffect(() => {
         const handleScroll = () => {
-            const currentScrollY = window.scrollY
-            
-            if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                // Scroll vers le bas et dépassé 100px
-                setScrollDirection('down')
-            } else {
-                // Scroll vers le haut
-                setScrollDirection('up')
-            }
-            
-            setLastScrollY(currentScrollY)
+        const currentScrollY = window.scrollY
+        
+        // Disparaît dès le premier scroll vers le bas (suppression du seuil de 100px)
+        if (currentScrollY > lastScrollY && currentScrollY > 0) {
+            setScrollDirection('down')
+        } else {
+            setScrollDirection('up')
+        }
+        
+        setLastScrollY(currentScrollY)
         }
 
         window.addEventListener('scroll', handleScroll)
