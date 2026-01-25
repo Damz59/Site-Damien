@@ -84,6 +84,26 @@ main {
     }
 }
 
+/* Effet clignotant + zoom au survol des liens de navigation */
+@keyframes blinkZoom {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.3;
+        transform: scale(1.15);
+    }
+}
+
+.nav-link {
+    transition: transform 0.3s ease;
+}
+
+.nav-link:hover {
+    animation: blinkZoom 0.8s ease-in-out infinite;
+}
+
 /* Cards de la section avec effet hover */
 .card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -117,3 +137,15 @@ main {
     color: #495057;
 }
 
+/* Bouton retour personnalisé - fond rouge, texte blanc */
+.btn-home-back {
+    background-color: #dc3545;
+    color: white;
+    border: 1px solid #dc3545;
+}
+.btn-home-back:hover {
+    background-color: #dc3545;
+    color: white;
+    border: 1px solid #dc3545;
+    opacity: 1;
+}
