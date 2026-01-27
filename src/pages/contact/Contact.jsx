@@ -13,6 +13,8 @@ function Contact() {
     })
     
     const [submitted, setSubmitted] = useState(false)
+    const [error, setError] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     const handleChange = (e) => {
         setFormData({
@@ -21,22 +23,44 @@ function Contact() {
         })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log('Message envoyé:', formData)
-        setSubmitted(true)
+        setLoading(true)
+        setError(null)
         
-        // Réinitialiser le formulaire après 3 secondes
-        setTimeout(() => {
-            setSubmitted(false)
-            setFormData({
-                nom: '',
-                prenom: '',
-                email: '',
-                sujet: '',
-                message: ''
+        try {
+            const response = await fetch('https://damienvdh59250.duckdns.org/api/contact.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
             })
-        }, 3000)
+            
+            const data = await response.json()
+            
+            if (data.success) {
+                setSubmitted(true)
+                // Réinitialiser le formulaire après 3 secondes
+                setTimeout(() => {
+                    setSubmitted(false)
+                    setFormData({
+                        nom: '',
+                        prenom: '',
+                        email: '',
+                        sujet: '',
+                        message: ''
+                    })
+                }, 3000)
+            } else {
+                setError(data.error || 'Une erreur est survenue')
+            }
+        } catch (err) {
+            console.error('Erreur:', err)
+            setError('Impossible d\'envoyer le message. Veuillez réessayer.')
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -50,6 +74,12 @@ function Contact() {
                         {submitted && (
                             <Alert variant="success" className="mb-4">
                                 <strong>✓ Message envoyé !</strong> Merci pour votre message, je vous répondrai dans les plus brefs délais.
+                            </Alert>
+                        )}
+                        
+                        {error && (
+                            <Alert variant="danger" className="mb-4" onClose={() => setError(null)} dismissible>
+                                <strong>Erreur :</strong> {error}
                             </Alert>
                         )}
                         
@@ -69,6 +99,7 @@ function Contact() {
                                                     onChange={handleChange}
                                                     autoComplete="given-name"
                                                     placeholder="Votre prénom"
+                                                    disabled={loading}
                                                     required
                                                 />
                                             </Form.Group>
@@ -84,6 +115,7 @@ function Contact() {
                                                     onChange={handleChange}
                                                     autoComplete="family-name"
                                                     placeholder="Votre nom"
+                                                    disabled={loading}
                                                     required
                                                 />
                                             </Form.Group>
@@ -99,6 +131,7 @@ function Contact() {
                                             onChange={handleChange}
                                             autoComplete="email"
                                             placeholder="votre.email@exemple.com"
+                                            disabled={loading}
                                             required
                                         />
                                     </Form.Group>
@@ -111,6 +144,7 @@ function Contact() {
                                             value={formData.sujet}
                                             onChange={handleChange}
                                             placeholder="Objet de votre message"
+                                            disabled={loading}
                                             required
                                         />
                                     </Form.Group>
@@ -124,12 +158,18 @@ function Contact() {
                                             onChange={handleChange}
                                             rows={6}
                                             placeholder="Votre message..."
+                                            disabled={loading}
                                             required
                                         />
                                     </Form.Group>
 
-                                    <Button variant="primary" type="submit" size="lg">
-                                        📧 Envoyer le message
+                                    <Button 
+                                        variant="primary" 
+                                        type="submit" 
+                                        size="lg"
+                                        disabled={loading}
+                                    >
+                                        {loading ? '📤 Envoi en cours...' : '📧 Envoyer le message'}
                                     </Button>
                                 </Form>
                             </Card.Body>
