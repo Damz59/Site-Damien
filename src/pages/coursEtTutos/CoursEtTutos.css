@@ -1,0 +1,17 @@
+.cet-course-logo {
+	width: 90px;
+	height: 90px;
+	object-fit: contain;
+	display: block;
+	margin: 0 auto;
+}
+
+.cet-course-card {
+	cursor: pointer;
+	color: inherit; /* évite le bleu des liens */
+}
+
+.cet-course-card:hover {
+	transform: translateY(-2px);
+	transition: transform 0.12s ease;
+}

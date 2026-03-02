@@ -1,9 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Container, Row, Col } from 'react-bootstrap'
-import Header from "../../Components/Header.jsx"
-import Body from "../../Components/Body.jsx"
-import Section from "../../Components/Section.jsx" 
-import Footer from "../../Components/Footer.jsx"
+import Header from "../../components/Header/Header.jsx"
+import Body from "../../components/Body/Body.jsx"
+import Section from "../../components/Section/Section.jsx" 
+import Footer from "../../components/Footer/Footer.jsx"
 import '../../App.css'
 
 function Acceuil() {

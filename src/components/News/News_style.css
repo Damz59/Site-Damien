@@ -1,0 +1,145 @@
+/* Reset */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+}
+
+.App {
+	width: 100%;
+	max-width: 800px;
+}
+
+/* Image bandeau */
+.bandeau-newspaper {
+	height: 380px;
+	width: 100%;
+	display: block;
+	border: 0;
+	outline: 0;
+	box-shadow: none;
+}
+
+/* Container news : badge + ticker sur la même ligne */
+.news-container {
+	width: 100%;
+	height: 10ch;
+	display: flex;
+	align-items: center;
+
+	overflow: hidden;
+	background: rgba(102, 126, 234, 0.95);
+	padding: 8px 16px;
+	border-radius: 8px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+	font-weight: 500;
+
+	/* Espace entre "Nouveautés" et le texte */
+	gap: 24px;
+
+	/* Sécurité : pas de bordure parasite */
+	border: 0;
+	outline: 0;
+}
+
+.news-title {
+	flex: 0 0 auto;
+	white-space: nowrap;
+
+	font-size: 18px;
+	color: #ffffff;
+	background: rgba(118, 75, 162, 0.95);
+	padding: 6px 16px;
+	border-radius: 20px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.news-ticker-wrapper {
+	flex: 1 1 auto;
+	min-width: 0; /* important en flex */
+	height: 100%;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+
+	/* Bonus : espace supplémentaire */
+	padding-left: 12px;
+}
+
+/* Défilement */
+.news-ticker {
+	display: inline-flex;
+	align-items: center;
+	white-space: nowrap;
+	will-change: transform;
+	animation: scroll 40s linear infinite;
+}
+
+.news-ticker:hover {
+	animation-play-state: paused;
+}
+
+.news-ticker span {
+	font-size: 16px;
+	line-height: 1.1;
+	padding: 0 25px 0 15px;
+
+	/* supprime tout séparateur visuel (| ou bordures) */
+	border: 0;
+}
+
+.news-ticker span::before,
+.news-ticker span::after {
+	content: none;
+	display: none;
+}
+
+@keyframes scroll {
+	0% { transform: translateX(0); }
+	100% { transform: translateX(-50%); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.news-container {
+		padding: 6px 12px;
+		height: 6ch;
+		gap: 16px;
+	}
+
+	.news-title {
+		font-size: 15px;
+		padding: 5px 10px;
+	}
+
+	.news-ticker-wrapper {
+		padding-left: 10px;
+	}
+
+	.news-ticker span {
+		font-size: 14px;
+		padding: 0 20px 0 12px;
+	}
+}
+
+@media (max-width: 480px) {
+	.news-container {
+		height: auto;
+		padding: 10px 12px;
+		gap: 60px; /* ton choix “plus d’espace” */
+	}
+
+	.news-ticker-wrapper {
+		padding-left: 40px;
+	}
+}

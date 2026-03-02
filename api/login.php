@@ -1,89 +1,126 @@
 <?php
-session_start();
+// login.php
+declare(strict_types=1);
 
-header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: https://damienvdh59250.duckdns.org');
-header('Access-Control-Allow-Methods: POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-header('Access-Control-Allow-Credentials: true');
+if (session_status() === PHP_SESSION_NONE) {
+	$https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
 
-// Gestion de la requête OPTIONS (preflight CORS)
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
+	session_set_cookie_params([
+		'lifetime' => 0,
+		'path' => '/',
+		'samesite' => 'Lax',
+		'secure' => $https, // ✅ true en prod HTTPS, false en dev HTTP
+		'httponly' => true,
+	]);
+
+	session_start();
 }
 
-// Vérifier que c'est une requête POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(['success' => false, 'error' => 'Méthode non autorisée']);
-    exit();
+require_once __DIR__ . '/cors.php';
+header('Content-Type: application/json; charset=utf-8');
+
+// Préflight
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') {
+	http_response_code(200);
+	exit();
 }
 
-// Configuration de la base de données
-$host = 'localhost';
-$dbname = 'site_db';
-$username = 'damien';
-$password = 'votre_mot_de_passe'; // Ton mot de passe MariaDB
+if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+	http_response_code(405);
+	echo json_encode(['success' => false, 'error' => 'Méthode non autorisée']);
+	exit();
+}
+
+require_once __DIR__ . '/db.php';
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    http_response_code(500);
-    echo json_encode(['success' => false, 'error' => 'Erreur de connexion à la base de données']);
-    exit();
+	$pdo = getPDO();
+} catch (Throwable $e) {
+	error_log("login.php DB connect error: " . $e->getMessage());
+	http_response_code(500);
+	echo json_encode(['success' => false, 'error' => 'Erreur de connexion à la base de données']);
+	exit();
 }
 
-// Récupérer les données JSON
 $data = json_decode(file_get_contents('php://input'), true);
-
-// Validation des données
-if (!isset($data['username']) || !isset($data['password'])) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'error' => 'Données manquantes']);
-    exit();
+if (!is_array($data)) {
+	http_response_code(400);
+	echo json_encode(['success' => false, 'error' => 'JSON invalide']);
+	exit();
 }
 
-$inputUsername = trim($data['username']);
-$inputPassword = $data['password'];
+$inputUsername = trim((string)($data['username'] ?? ''));
+$inputPassword = (string)($data['password'] ?? '');
 
-// Rechercher l'utilisateur dans la base de données
+if ($inputUsername === '' || $inputPassword === '') {
+	http_response_code(400);
+	echo json_encode(['success' => false, 'error' => 'Données manquantes']);
+	exit();
+}
+
 try {
-    $stmt = $pdo->prepare('SELECT id, username, email, password, role, active FROM users WHERE username = ? OR email = ?');
-    $stmt->execute([$inputUsername, $inputUsername]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if (!$user) {
-        http_response_code(401);
-        echo json_encode(['success' => false, 'error' => 'Identifiants incorrects']);
-        exit();
-    }
-    
-    // Vérifier le mot de passe
-    if (!password_verify($inputPassword, $user['password'])) {
-        http_response_code(401);
-        echo json_encode(['success' => false, 'error' => 'Identifiants incorrects']);
-        exit();
-    }
-    
-    // Connexion réussie - créer une session
-    $_SESSION['admin_id'] = $user['id'];
-    $_SESSION['admin_username'] = $user['username'];
-    $_SESSION['logged_in'] = true;
-    
-    http_response_code(200);
-    echo json_encode([
-        'success' => true,
-        'message' => 'Connexion réussie',
-        'user' => [
-            'id' => $user['id'],
-            'username' => $user['username']
-        ]
-    ]);
-    
+	$stmt = $pdo->prepare(
+		'SELECT id, username, email, prenom, nom, password, role, active
+		 FROM users
+		 WHERE username = ? OR email = ?
+		 LIMIT 1'
+	);
+
+	$stmt->execute([$inputUsername, $inputUsername]);
+	$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+	if (!$user) {
+		http_response_code(401);
+		echo json_encode(['success' => false, 'error' => 'Identifiants incorrects']);
+		exit();
+	}
+
+	if ((int)($user['active'] ?? 0) !== 1) {
+		http_response_code(403);
+		echo json_encode(['success' => false, 'error' => 'Compte désactivé']);
+		exit();
+	}
+
+	if (!password_verify($inputPassword, (string)($user['password'] ?? ''))) {
+		http_response_code(401);
+		echo json_encode(['success' => false, 'error' => 'Identifiants incorrects']);
+		exit();
+	}
+
+	// Sécurité : régénérer l’ID de session après login
+	session_regenerate_id(true);
+
+	$_SESSION['logged_in'] = true;
+	$_SESSION['user_id'] = (int)$user['id'];
+	$_SESSION['username'] = (string)$user['username'];
+	$_SESSION['email'] = (string)$user['email'];
+	$_SESSION['role'] = (string)$user['role']; // admin | moderator | user
+	$_SESSION['prenom'] = (string)($user['prenom'] ?? '');
+	$_SESSION['nom'] = (string)($user['nom'] ?? '');
+	$_SESSION['last_activity'] = time();
+
+	echo json_encode([
+		'success' => true,
+		'message' => 'Connexion réussie',
+		'user' => [
+			'id' => (int)$user['id'],
+			'username' => (string)$user['username'],
+			'email' => (string)$user['email'],
+			'role' => (string)$user['role'],
+			'prenom' => (string)($user['prenom'] ?? ''),
+			'nom' => (string)($user['nom'] ?? ''),
+		],
+	]);
+	exit();
+
 } catch (PDOException $e) {
-    http_response_code(500);
-    echo json_encode(['success' => false, 'error' => 'Erreur lors de la vérification']);
+	error_log("login.php PDO error: " . $e->getMessage());
+	http_response_code(500);
+	echo json_encode(['success' => false, 'error' => 'Erreur lors de la vérification']);
+	exit();
+} catch (Throwable $e) {
+	error_log("login.php error: " . $e->getMessage());
+	http_response_code(500);
+	echo json_encode(['success' => false, 'error' => 'Erreur serveur']);
+	exit();
 }
-?>

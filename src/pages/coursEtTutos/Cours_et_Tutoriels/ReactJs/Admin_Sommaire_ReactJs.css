@@ -1,0 +1,56 @@
+/* Admin_Sommaire_ReactJs.css */
+
+.admin-sommaire-reactjs {
+	--asr-gap: 0.75rem;
+}
+
+.admin-sommaire-reactjs__titlebar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--asr-gap);
+	margin-bottom: 0.75rem;
+}
+
+.admin-sommaire-reactjs__cardHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--asr-gap);
+}
+
+.admin-sommaire-reactjs__tableWrap {
+	width: 100%;
+	overflow-x: auto;
+}
+
+.admin-sommaire-reactjs__colOrder {
+	width: 90px;
+	white-space: nowrap;
+}
+
+.admin-sommaire-reactjs__colActive {
+	width: 80px;
+	white-space: nowrap;
+}
+
+.admin-sommaire-reactjs__colActions {
+	width: 260px;
+	white-space: nowrap;
+}
+
+.admin-sommaire-reactjs__orderBtns {
+	display: flex;
+	gap: 0.35rem;
+}
+
+.admin-sommaire-reactjs__actions {
+	display: flex;
+	gap: 0.5rem;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+}
+
+.admin-sommaire-reactjs__code {
+	font-size: 0.9em;
+}

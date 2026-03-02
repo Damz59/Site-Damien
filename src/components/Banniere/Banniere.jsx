@@ -1,4 +1,5 @@
 import { Alert } from 'react-bootstrap'
+import "./Banniere_style.css"
 
 function Banniere() {
     return (
