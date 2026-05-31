@@ -1,0 +1,56 @@
+/* Admin_Sommaire_Exercice_Java_SDBM.css */
+
+.admin-sommaire-exercice-java-sdbm {
+	--asr-gap: 0.75rem;
+}
+
+.admin-sommaire-exercice-java-sdbm__titlebar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--asr-gap);
+	margin-bottom: 0.75rem;
+}
+
+.admin-sommaire-exercice-java-sdbm__cardHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--asr-gap);
+}
+
+.admin-sommaire-exercice-java-sdbm__tableWrap {
+	width: 100%;
+	overflow-x: auto;
+}
+
+.admin-sommaire-exercice-java-sdbm__colOrder {
+	width: 90px;
+	white-space: nowrap;
+}
+
+.admin-sommaire-exercice-java-sdbm__colActive {
+	width: 80px;
+	white-space: nowrap;
+}
+
+.admin-sommaire-exercice-java-sdbm__colActions {
+	width: 260px;
+	white-space: nowrap;
+}
+
+.admin-sommaire-exercice-java-sdbm__orderBtns {
+	display: flex;
+	gap: 0.35rem;
+}
+
+.admin-sommaire-exercice-java-sdbm__actions {
+	display: flex;
+	gap: 0.5rem;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+}
+
+.admin-sommaire-exercice-java-sdbm__code {
+	font-size: 0.9em;
+}

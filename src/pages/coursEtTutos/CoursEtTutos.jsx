@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { Container, Card, Badge, Spinner, Alert, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
 import Banniere from "../../components/Banniere/Banniere.jsx";
 import BanniereIsConnected from "../../components/Banniere_isConnected/Banniere_isConnected.jsx";
 import { API_BASE } from "../../config/api";
@@ -30,6 +29,7 @@ export default function CoursEtTutos({ authUser }) {
 				const res = await fetch(`${API_BASE}/coursEtTutos-categories.php`, {
 					credentials: "include",
 				});
+
 				const data = await res.json();
 
 				if (!res.ok || !data.success) {
@@ -111,7 +111,11 @@ export default function CoursEtTutos({ authUser }) {
 														? "/coursEtTutos/reactjs/sommaire"
 														: it.slug === "php"
 															? "/coursEtTutos/php/sommaire"
-															: `/coursEtTutos/${it.slug}`;
+															: it.slug === "dart-flutter"
+																? "/coursEtTutos/dart_flutter/sommaire"
+																: it.slug === "java_sdbm"
+																	? "/coursEtTutos/java_sdbm/sommaire"
+																	: `/coursEtTutos/${it.slug}`;
 
 												return (
 													<Col key={it.id} xs={12} md={6} lg={4}>

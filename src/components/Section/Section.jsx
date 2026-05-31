@@ -1,6 +1,7 @@
-import { Card } from "react-bootstrap"
-import { FaGithub, FaLinkedin } from "react-icons/fa"
-import "./Section_style.css"
+// src/components/Section/Section.jsx
+import { Card } from "react-bootstrap";
+import { FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa";
+import "./Section_style.css";
 
 function Section() {
     return (
@@ -31,6 +32,17 @@ function Section() {
                     className="text-decoration-none"
                 >
                     <FaLinkedin className="me-1" /> Mon LinkedIn
+                </a>
+                </li>
+
+                <li className="mb-2">
+                <a
+                    href="https://damz59.github.io/Portfolio_DV_2026--Build/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-decoration-none"
+                >
+                    <FaGlobe className="me-1" /> Portfolio
                 </a>
                 </li>
 
@@ -73,12 +85,12 @@ function Section() {
             <h5 className="mb-0">Statut</h5>
             </Card.Header>
             <Card.Body>
-            <p className="small text-muted mb-1">🎯 En recherche d'alternance</p>
+            <p className="small text-muted mb-1">🎯 En recherche d&apos;alternance</p>
             <p className="small text-muted mb-0">📅 Disponible immédiatement</p>
             </Card.Body>
         </Card>
         </aside>
-    )
+    );
 }
 
-export default Section
+export default Section;

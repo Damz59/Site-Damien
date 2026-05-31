@@ -14,9 +14,11 @@ import {
 	Col,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+
 import Banniere from "../../components/Banniere/Banniere.jsx";
 import BanniereIsConnected from "../../components/Banniere_isConnected/Banniere_isConnected.jsx";
 import { API_BASE } from "../../config/api";
+
 import "./Admin_CoursEtTutos.css";
 
 const slugify = (s) =>
@@ -42,8 +44,9 @@ export default function AdminCoursEtTutos({ authUser }) {
 	const [itemsLoading, setItemsLoading] = useState(true);
 	const [itemsError, setItemsError] = useState(null);
 	const [items, setItems] = useState([]);
-	const [selectedCategoryId, setSelectedCategoryId] = useState("");
 
+	// Form create item
+	const [selectedCategoryId, setSelectedCategoryId] = useState("");
 	const [newItemTitle, setNewItemTitle] = useState("");
 	const [newItemSlug, setNewItemSlug] = useState("");
 	const [newItemShortDesc, setNewItemShortDesc] = useState("");
@@ -52,11 +55,13 @@ export default function AdminCoursEtTutos({ authUser }) {
 	const loadCategories = async () => {
 		setLoading(true);
 		setError(null);
+
 		try {
 			const res = await fetch(`${API_BASE}/coursEtTutos-categories-admin.php`, {
 				credentials: "include",
 			});
 			const data = await res.json();
+
 			if (!res.ok || !data.success) {
 				throw new Error(data.error || "Erreur chargement catégories");
 			}
@@ -64,7 +69,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 			const nextCats = data.categories || [];
 			setCategories(nextCats);
 
-			// Assure une sélection valide
+			// Assure une sélection valide pour le formulaire d’ajout
 			if (nextCats.length > 0) {
 				const stillExists = nextCats.some(
 					(c) => String(c.id) === String(selectedCategoryId)
@@ -85,14 +90,17 @@ export default function AdminCoursEtTutos({ authUser }) {
 	const loadItems = async () => {
 		setItemsLoading(true);
 		setItemsError(null);
+
 		try {
 			const res = await fetch(`${API_BASE}/coursEtTutos-items-admin.php`, {
 				credentials: "include",
 			});
 			const data = await res.json();
+
 			if (!res.ok || !data.success) {
 				throw new Error(data.error || "Erreur chargement items");
 			}
+
 			setItems(data.items || []);
 		} catch (e) {
 			setItemsError(e?.message || "Erreur chargement items");
@@ -120,14 +128,29 @@ export default function AdminCoursEtTutos({ authUser }) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [newItemTitle]);
 
-	const selectedCatIdNum = selectedCategoryId ? Number(selectedCategoryId) : null;
+	// -----------------------------
+	// items groupés par catégorie
+	// -----------------------------
+	const itemsByCategoryId = useMemo(() => {
+		// init map with known categories to keep order stable
+		const map = new Map(); // "categoryId" -> items[]
+		for (const c of categories) {
+			map.set(String(c.id), []);
+		}
 
-	const itemsForSelectedCategory = useMemo(() => {
-		if (!selectedCatIdNum) return [];
-		return items
-			.filter((it) => Number(it.category_id) === selectedCatIdNum)
-			.sort((a, b) => Number(a.position) - Number(b.position));
-	}, [items, selectedCatIdNum]);
+		for (const it of items) {
+			const key = String(it.category_id);
+			if (!map.has(key)) map.set(key, []);
+			map.get(key).push(it);
+		}
+
+		// sort items inside each category by position
+		for (const [, arr] of map.entries()) {
+			arr.sort((a, b) => Number(a.position) - Number(b.position));
+		}
+
+		return map;
+	}, [categories, items]);
 
 	// -----------------------------
 	// Actions catégories
@@ -144,6 +167,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ name }),
 			});
 			const data = await res.json();
+
 			if (!res.ok || !data.success) throw new Error(data.error || "Erreur création");
 
 			setNewName("");
@@ -165,6 +189,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id, name: next.trim() }),
 			});
 			const data = await res.json();
+
 			if (!res.ok || !data.success) throw new Error(data.error || "Erreur modification");
 
 			await loadCategories();
@@ -184,6 +209,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id }),
 			});
 			const data = await res.json();
+
 			if (!res.ok || !data.success) throw new Error(data.error || "Erreur suppression");
 
 			await loadAll();
@@ -201,6 +227,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id, active: nextActive }),
 			});
 			const data = await res.json();
+
 			if (!res.ok || !data.success) throw new Error(data.error || "Erreur update");
 
 			await loadCategories();
@@ -218,6 +245,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ action: "move", id, direction }),
 			});
 			const data = await res.json();
+
 			if (!res.ok || !data.success) throw new Error(data.error || "Erreur déplacement");
 
 			await loadCategories();
@@ -246,6 +274,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ category_id, title, slug, short_desc, image_url }),
 			});
 			const data = await res.json();
+
 			if (!res.ok || !data.success) throw new Error(data.error || "Erreur création item");
 
 			setNewItemTitle("");
@@ -270,6 +299,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id, title: next.trim() }),
 			});
 			const data = await res.json();
+
 			if (!res.ok || !data.success) throw new Error(data.error || "Erreur modification");
 
 			await loadItems();
@@ -290,6 +320,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id, slug: slugify(next.trim()) }),
 			});
 			const data = await res.json();
+
 			if (!res.ok || !data.success) throw new Error(data.error || "Erreur modification slug");
 
 			await loadItems();
@@ -310,8 +341,8 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id, short_desc: next }),
 			});
 			const data = await res.json();
-			if (!res.ok || !data.success)
-				throw new Error(data.error || "Erreur modification description");
+
+			if (!res.ok || !data.success) throw new Error(data.error || "Erreur modification description");
 
 			await loadItems();
 		} catch (e) {
@@ -331,6 +362,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id, image_url: next.trim() }),
 			});
 			const data = await res.json();
+
 			if (!res.ok || !data.success) throw new Error(data.error || "Erreur modification logo");
 
 			await loadItems();
@@ -348,6 +380,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id, active: nextActive }),
 			});
 			const data = await res.json();
+
 			if (!res.ok || !data.success) throw new Error(data.error || "Erreur update item");
 
 			await loadItems();
@@ -365,6 +398,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ action: "move", id, direction }),
 			});
 			const data = await res.json();
+
 			if (!res.ok || !data.success) throw new Error(data.error || "Erreur déplacement item");
 
 			await loadItems();
@@ -384,6 +418,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id }),
 			});
 			const data = await res.json();
+
 			if (!res.ok || !data.success) throw new Error(data.error || "Erreur suppression item");
 
 			await loadItems();
@@ -416,7 +451,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 			</div>
 
 			<Container className="my-5">
-				<h1 className="mb-4">Administration Cours & Tutoriels</h1>
+				<h1 className="mb-4">Administration Cours &amp; Tutoriels</h1>
 
 				{error && <Alert variant="danger">{error}</Alert>}
 
@@ -494,9 +529,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 											<Button
 												size="sm"
 												variant={Number(c.active) ? "outline-warning" : "outline-success"}
-												onClick={() =>
-													toggleActiveCategory(c.id, Number(c.active) ? 0 : 1)
-												}
+												onClick={() => toggleActiveCategory(c.id, Number(c.active) ? 0 : 1)}
 											>
 												{Number(c.active) ? "Désactiver" : "Activer"}
 											</Button>
@@ -542,6 +575,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 							</Alert>
 						) : (
 							<>
+								{/* Formulaire de création */}
 								<Row className="g-3 align-items-end">
 									<Col xs={12} md={4}>
 										<Form.Label>Catégorie</Form.Label>
@@ -560,7 +594,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 									<Col xs={12} md={4}>
 										<Form.Label>Titre</Form.Label>
 										<Form.Control
-											placeholder="PHP"
+											placeholder="Ex: ReactJS"
 											value={newItemTitle}
 											onChange={(e) => setNewItemTitle(e.target.value)}
 										/>
@@ -569,7 +603,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 									<Col xs={12} md={4}>
 										<Form.Label>Slug</Form.Label>
 										<Form.Control
-											placeholder="php"
+											placeholder="ex: reactjs"
 											value={newItemSlug}
 											onChange={(e) => setNewItemSlug(e.target.value)}
 										/>
@@ -578,7 +612,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 									<Col xs={12}>
 										<Form.Label>Description courte (optionnel)</Form.Label>
 										<Form.Control
-											placeholder="Ex: Cours PHP"
+											placeholder="Ex: Cours ReactJS"
 											value={newItemShortDesc}
 											onChange={(e) => setNewItemShortDesc(e.target.value)}
 										/>
@@ -587,7 +621,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 									<Col xs={12}>
 										<Form.Label>Logo (image_url)</Form.Label>
 										<Form.Control
-											placeholder="/logos/php.svg"
+											placeholder="/logos/react.svg"
 											value={newItemImageUrl}
 											onChange={(e) => setNewItemImageUrl(e.target.value)}
 										/>
@@ -597,15 +631,10 @@ export default function AdminCoursEtTutos({ authUser }) {
 										<Button
 											variant="success"
 											onClick={createItem}
-											disabled={
-												!selectedCategoryId ||
-												!newItemTitle.trim() ||
-												!newItemSlug.trim()
-											}
+											disabled={!selectedCategoryId || !newItemTitle.trim() || !newItemSlug.trim()}
 										>
 											Ajouter le cours
 										</Button>
-
 										<Button variant="outline-secondary" onClick={loadItems}>
 											Recharger cours
 										</Button>
@@ -618,133 +647,156 @@ export default function AdminCoursEtTutos({ authUser }) {
 									<div className="text-center my-3">
 										<Spinner />
 									</div>
-								) : !selectedCategoryId ? (
-									<p className="text-muted mb-0">Aucune catégorie sélectionnée.</p>
-								) : itemsForSelectedCategory.length === 0 ? (
-									<p className="text-muted mb-0">Aucun cours dans cette catégorie.</p>
 								) : (
-									<ListGroup>
-										{itemsForSelectedCategory.map((it, idx) => (
-											<ListGroup.Item
-												key={it.id}
-												className="d-flex justify-content-between align-items-center"
-											>
-												<div className="d-flex align-items-center gap-3">
-													{it.image_url ? (
-														<img
-															className="admin-cet-logo"
-															src={it.image_url}
-															alt={`Logo ${it.title}`}
-														/>
-													) : null}
+									<>
+										{/* Affichage groupé par catégories */}
+										{categories
+											.slice()
+											.sort((a, b) => Number(a.position) - Number(b.position))
+											.map((cat) => {
+												const list = itemsByCategoryId.get(String(cat.id)) || [];
+												return (
+													<Card key={cat.id} className="shadow-sm mb-3">
+														<Card.Header className="d-flex align-items-center justify-content-between">
+															<strong>{cat.name}</strong>
+															<Badge bg="light" text="dark">
+																{list.length}
+															</Badge>
+														</Card.Header>
 
-													<div>
-														<strong>{it.title}</strong>{" "}
-														<span className="text-muted small">
-															(slug: {it.slug} | pos: {it.position})
-														</span>
-														{Number(it.active) === 0 && (
-															<span className="text-muted"> — inactif</span>
-														)}
+														<Card.Body>
+															{list.length === 0 ? (
+																<p className="text-muted mb-0">
+																	Aucun cours dans cette catégorie.
+																</p>
+															) : (
+																<ListGroup>
+																	{list.map((it, idx) => (
+																		<ListGroup.Item
+																			key={it.id}
+																			className="d-flex justify-content-between align-items-center"
+																		>
+																			<div className="d-flex align-items-center gap-3">
+																				{it.image_url ? (
+																					<img
+																						className="admin-cet-logo"
+																						src={it.image_url}
+																						alt={`Logo ${it.title}`}
+																					/>
+																				) : null}
 
-														{it.short_desc ? (
-															<div className="text-muted small">{it.short_desc}</div>
-														) : null}
-														{it.image_url ? (
-															<div className="text-muted small">logo: {it.image_url}</div>
-														) : null}
-													</div>
-												</div>
+																				<div>
+																					<strong>{it.title}</strong>{" "}
+																					<span className="text-muted small">
+																						(slug: {it.slug} | pos: {it.position})
+																					</span>
 
-												<div className="d-flex gap-2">
-													<Button
-														size="sm"
-														variant="outline-secondary"
-														disabled={idx === 0}
-														onClick={() => moveItem(it.id, "up")}
-														title="Monter"
-													>
-														↑
-													</Button>
-													<Button
-														size="sm"
-														variant="outline-secondary"
-														disabled={idx === itemsForSelectedCategory.length - 1}
-														onClick={() => moveItem(it.id, "down")}
-														title="Descendre"
-													>
-														↓
-													</Button>
+																					{Number(it.active) === 0 && (
+																						<span className="text-muted"> — inactif</span>
+																					)}
 
-													<Button
-														size="sm"
-														variant={Number(it.active) ? "outline-warning" : "outline-success"}
-														onClick={() => toggleActiveItem(it.id, Number(it.active) ? 0 : 1)}
-													>
-														{Number(it.active) ? "Désactiver" : "Activer"}
-													</Button>
+																					{it.short_desc ? (
+																						<div className="text-muted small">{it.short_desc}</div>
+																					) : null}
 
-													<Button
-														size="sm"
-														variant="outline-primary"
-														onClick={() => renameItem(it.id, it.title)}
-													>
-														Renommer
-													</Button>
+																					{it.image_url ? (
+																						<div className="text-muted small">logo: {it.image_url}</div>
+																					) : null}
+																				</div>
+																			</div>
 
-													<Button
-														size="sm"
-														variant="outline-primary"
-														onClick={() => editItemSlug(it.id, it.slug)}
-													>
-														Slug
-													</Button>
+																			<div className="d-flex gap-2 flex-wrap justify-content-end">
+																				<Button
+																					size="sm"
+																					variant="outline-secondary"
+																					disabled={idx === 0}
+																					onClick={() => moveItem(it.id, "up")}
+																					title="Monter"
+																				>
+																					↑
+																				</Button>
 
-													<Button
-														size="sm"
-														variant="outline-primary"
-														onClick={() => editItemDesc(it.id, it.short_desc)}
-													>
-														Description
-													</Button>
+																				<Button
+																					size="sm"
+																					variant="outline-secondary"
+																					disabled={idx === list.length - 1}
+																					onClick={() => moveItem(it.id, "down")}
+																					title="Descendre"
+																				>
+																					↓
+																				</Button>
 
-													<Button
-														size="sm"
-														variant="outline-primary"
-														onClick={() => editItemLogo(it.id, it.image_url)}
-													>
-														Logo
-													</Button>
+																				<Button
+																					size="sm"
+																					variant={
+																						Number(it.active) ? "outline-warning" : "outline-success"
+																					}
+																					onClick={() => toggleActiveItem(it.id, Number(it.active) ? 0 : 1)}
+																				>
+																					{Number(it.active) ? "Désactiver" : "Activer"}
+																				</Button>
 
-													{/* ✅ Accès admin chapitres */}
-													{it.slug === "reactjs" && (
-														<Link
-															to="/admin/coursEtTutos/reactjs/chapitres"
-															className="btn btn-outline-dark btn-sm"
-														>
-															Chapitres
-														</Link>
-													)}
-													{it.slug === "php" && (
-														<Link
-															to="/admin/coursEtTutos/php/chapitres"
-															className="btn btn-outline-dark btn-sm"
-														>
-															Chapitres
-														</Link>
-													)}
+																				<Button size="sm" variant="outline-primary" onClick={() => renameItem(it.id, it.title)}>
+																					Renommer
+																				</Button>
 
-													<Button
-														size="sm"
-														variant="outline-danger"
-														onClick={() => deleteItem(it.id, it.title)}
-													>
-														Supprimer
-													</Button>
-												</div>
-											</ListGroup.Item>
-										))}
-									</ListGroup>
+																				<Button size="sm" variant="outline-primary" onClick={() => editItemSlug(it.id, it.slug)}>
+																					Slug
+																				</Button>
+
+																				<Button size="sm" variant="outline-primary" onClick={() => editItemDesc(it.id, it.short_desc)}>
+																					Description
+																				</Button>
+
+																				<Button size="sm" variant="outline-primary" onClick={() => editItemLogo(it.id, it.image_url)}>
+																					Logo
+																				</Button>
+
+																				{/* Boutons chapitres admin */}
+																				{it.slug === "reactjs" && (
+																					<Link to="/admin/coursEtTutos/reactjs/chapitres" className="btn btn-outline-dark btn-sm">
+																						Chapitres
+																					</Link>
+																				)}
+
+																				{it.slug === "php" && (
+																					<Link to="/admin/coursEtTutos/php/chapitres" className="btn btn-outline-dark btn-sm">
+																						Chapitres
+																					</Link>
+																				)}
+
+																				{it.slug === "dart_flutter" && (
+																					<Link to="/admin/coursEtTutos/dart_flutter/chapitres" className="btn btn-outline-dark btn-sm">
+																						Chapitres
+																					</Link>
+																				)}
+
+																				{it.slug === "java_sdbm" && (
+																					<Link to="/admin/coursEtTutos/java_sdbm/chapitres" className="btn btn-outline-dark btn-sm">
+																						Chapitres
+																					</Link>
+																				)}
+
+																				{/* ✅ AJOUT : Angular (slug BDD = angular-sdbm) */}
+																				{it.slug === "angular-sdbm" && (
+																					<Link to="/admin/coursEtTutos/angular-sdbm/chapitres" className="btn btn-outline-dark btn-sm">
+																						Chapitres
+																					</Link>
+																				)}
+
+																				<Button size="sm" variant="outline-danger" onClick={() => deleteItem(it.id, it.title)}>
+																					Supprimer
+																				</Button>
+																			</div>
+																		</ListGroup.Item>
+																	))}
+																</ListGroup>
+															)}
+														</Card.Body>
+													</Card>
+												);
+											})}
+									</>
 								)}
 							</>
 						)}

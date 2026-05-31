@@ -1,56 +1,57 @@
-/* Admin_Sommaire_ReactJs.css */
+/* Admin_Sommaire_Dart_Flutter.css */
+/* Basé sur Admin_Sommaire_ReactJs.css, avec préfixe "admin-sommaire-dartflutter" */
 
-.admin-sommaire-reactjs {
-	--asr-gap: 0.75rem;
+.admin-sommaire-dartflutter {
+	--asdf-gap: 0.75rem;
 }
 
-.admin-sommaire-reactjs__titlebar {
+.admin-sommaire-dartflutter__titlebar {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: var(--asr-gap);
+	gap: var(--asdf-gap);
 	margin-bottom: 0.75rem;
 }
 
-.admin-sommaire-reactjs__cardHeader {
+.admin-sommaire-dartflutter__cardHeader {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: var(--asr-gap);
+	gap: var(--asdf-gap);
 }
 
-.admin-sommaire-reactjs__tableWrap {
+.admin-sommaire-dartflutter__tableWrap {
 	width: 100%;
 	overflow-x: auto;
 }
 
-.admin-sommaire-reactjs__colOrder {
+.admin-sommaire-dartflutter__colOrder {
 	width: 90px;
 	white-space: nowrap;
 }
 
-.admin-sommaire-reactjs__colActive {
+.admin-sommaire-dartflutter__colActive {
 	width: 80px;
 	white-space: nowrap;
 }
 
-.admin-sommaire-reactjs__colActions {
+.admin-sommaire-dartflutter__colActions {
 	width: 260px;
 	white-space: nowrap;
 }
 
-.admin-sommaire-reactjs__orderBtns {
+.admin-sommaire-dartflutter__orderBtns {
 	display: flex;
 	gap: 0.35rem;
 }
 
-.admin-sommaire-reactjs__actions {
+.admin-sommaire-dartflutter__actions {
 	display: flex;
 	gap: 0.5rem;
 	justify-content: flex-end;
 	flex-wrap: wrap;
 }
 
-.admin-sommaire-reactjs__code {
+.admin-sommaire-dartflutter__code {
 	font-size: 0.9em;
 }

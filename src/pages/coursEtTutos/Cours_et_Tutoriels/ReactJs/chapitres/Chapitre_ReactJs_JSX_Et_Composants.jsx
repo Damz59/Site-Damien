@@ -54,13 +54,13 @@ export default function Chapitre_ReactJs_JSX_Et_Composants({ authUser }) {
 						<Card className="mt-3">
 							<Card.Body>
 								<pre className="mb-0">
-{`const name = "Damien";
+									{`const name = "Damien";
 
-return (
-  <h2 className="text-primary">
-    Bonjour {name}
-  </h2>
-);`}
+									return (
+									<h2 className="text-primary">
+										Bonjour {name}
+									</h2>
+									);`}
 								</pre>
 							</Card.Body>
 						</Card>

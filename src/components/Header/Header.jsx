@@ -62,7 +62,11 @@ function Header({ authUser, refreshAuth, clearAuthMessage }) {
 					className="fw-bold text-dark text-decoration-none"
 					onClick={handleGoHome}
 				>
-					DV
+					<img
+						src="/logos/Logo_DV.png"
+						alt="Logo DV"
+						className="dv-navbar__logo"
+					/>
 				</Navbar.Brand>
 
 				{/* Burger (mobile) */}

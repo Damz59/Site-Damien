@@ -131,6 +131,12 @@ function Connexion({ refreshAuth, authMessage, clearAuthMessage }) {
 											required
 										/>
 									</Form.Group>
+									
+									<div className="d-flex justify-content-end mb-3">
+										<Link to="/mot-de-passe-oublie" className="text-decoration-none small">
+											Mot de passe oublié ?
+										</Link>
+									</div>
 
 									<Button
 										variant="primary"
