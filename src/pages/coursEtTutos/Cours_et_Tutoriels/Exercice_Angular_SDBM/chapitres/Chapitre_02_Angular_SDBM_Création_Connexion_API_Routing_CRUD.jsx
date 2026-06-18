@@ -717,7 +717,7 @@ export default function Chapitre_02_Angular_SDBM_Connexion_API_Routing_CRUD() {
 
             <Link
                 className="btn-next"
-                to="/coursEtTutos/angular-sdbm/chapitre-03"
+                to="/coursEtTutos/angular-sdbm/formulaire-angular"
             >
                 Suivant → Chapitre 03 →
             </Link>

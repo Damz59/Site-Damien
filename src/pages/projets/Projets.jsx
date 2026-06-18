@@ -1,13 +1,11 @@
-import { Container, Row, Col, Card, Badge } from "react-bootstrap";
-import Section from "../../components/Section/Section.jsx";
-import Banniere from "../../components/Banniere/Banniere.jsx";
-import BanniereIsConnected from "../../components/Banniere_isConnected/Banniere_isConnected";
-import "./Projets_style.css";
+import { Container, Row, Col, Card, Badge } from "react-bootstrap"
+import Section from "../../components/Section/Section.jsx"
+import BanniereIsConnected from "../../components/Banniere_isConnected/Banniere_isConnected"
+import "./Projets_style.css"
 
 function Projets({ authUser }) {
 	return (
-		<main className="flex-grow-1 overflow-auto">
-			<Banniere />
+		<main className="page-content flex-grow-1 overflow-auto">
 
 			{authUser && (
 				<div className="mt-3">
@@ -18,21 +16,25 @@ function Projets({ authUser }) {
 			<Container className="my-5">
 				<Row>
 					<Col lg={9}>
-						<h1 className="display-3 border-bottom border-1 border-dark pb-2 d-inline-block mb-4">
+						<h1 className="page-projects-title pb-2 d-inline-block mb-4">
 							Mes Projets
 						</h1>
 
 						<Row className="g-4">
 							<Col md={6}>
-								<Card className="h-100 shadow-sm">
+								<Card className="project-card h-100 shadow-sm">
 									<Card.Body>
-										<Card.Title className="h4">🌐 Site personnel (full-stack)</Card.Title>
+										<Card.Title className="h4">
+											🌐 Site personnel (full-stack)
+										</Card.Title>
+
 										<Card.Text className="text-muted">
-											Site React (Vite) déployé sur Raspberry Pi avec Apache et SSL (Let’s Encrypt),
-											DuckDNS, API PHP et espace membre (inscription, connexion, déconnexion, rôles).
+											Site React (Vite) déployé sur Raspberry Pi avec Apache et
+											SSL (Let’s Encrypt), DuckDNS, API PHP et espace membre
+											(inscription, connexion, déconnexion, rôles).
 										</Card.Text>
 
-										<div className="mb-3">
+										<div className="project-badges mb-3">
 											<Badge bg="info" className="me-1 mb-1">
 												React
 											</Badge>
@@ -54,7 +56,7 @@ function Projets({ authUser }) {
 											href="https://damienvdh59250.duckdns.org/"
 											target="_blank"
 											rel="noopener noreferrer"
-											className="btn btn-primary btn-sm"
+											className="project-link"
 										>
 											Voir le site
 										</a>
@@ -63,16 +65,18 @@ function Projets({ authUser }) {
 							</Col>
 
 							<Col md={6}>
-								<Card className="h-100 shadow-sm">
+								<Card className="project-card h-100 shadow-sm">
 									<Card.Body>
 										<Card.Title className="h4">🔒 Infrastructure serveur</Card.Title>
+
 										<Card.Text className="text-muted">
-											Configuration et exploitation du serveur : VirtualHosts Apache (HTTP/HTTPS),
-											gestion SSL Let’s Encrypt, routage SPA React + API PHP via Alias, et déploiement
-											front/API en évitant d’écraser le dossier <code>api/</code>.
+											Configuration et exploitation du serveur : VirtualHosts Apache
+											(HTTP/HTTPS), gestion SSL Let’s Encrypt, routage SPA React + API
+											PHP via Alias, et déploiement front/API en évitant d’écraser le
+											dossier <code>api/</code>.
 										</Card.Text>
 
-										<div className="mb-3">
+										<div className="project-badges mb-3">
 											<Badge bg="success" className="me-1 mb-1">
 												Linux
 											</Badge>
@@ -91,15 +95,17 @@ function Projets({ authUser }) {
 							</Col>
 
 							<Col md={6}>
-								<Card className="h-100 shadow-sm">
+								<Card className="project-card h-100 shadow-sm">
 									<Card.Body>
 										<Card.Title className="h4">📱 Application web (modules)</Card.Title>
+
 										<Card.Text className="text-muted">
-											Interface responsive avec React Bootstrap et modules complets : Administration
-											(utilisateurs, messages, news), et Cours & Tutoriels (catégories, cours, chapitres).
+											Interface responsive avec React Bootstrap et modules complets :
+											Administration (utilisateurs, messages, news), et Cours & Tutoriels
+											(catégories, cours, chapitres).
 										</Card.Text>
 
-										<div className="mb-3">
+										<div className="project-badges mb-3">
 											<Badge bg="primary" className="me-1 mb-1">
 												React
 											</Badge>
@@ -118,16 +124,18 @@ function Projets({ authUser }) {
 							</Col>
 
 							<Col md={6}>
-								<Card className="h-100 shadow-sm">
+								<Card className="project-card h-100 shadow-sm">
 									<Card.Body>
 										<Card.Title className="h4">🗄️ Base de données</Card.Title>
+
 										<Card.Text className="text-muted">
-											Base relationnelle MariaDB + phpMyAdmin. Modélisation des données pour les
-											utilisateurs et pour le module Cours & Tutoriels (catégories, items, chapitres),
-											avec contraintes d’unicité et relations.
+											Base relationnelle MariaDB + phpMyAdmin. Modélisation des données
+											pour les utilisateurs et pour le module Cours & Tutoriels
+											(catégories, items, chapitres), avec contraintes d’unicité et
+											relations.
 										</Card.Text>
 
-										<div className="mb-3">
+										<div className="project-badges mb-3">
 											<Badge bg="info" className="me-1 mb-1">
 												MariaDB
 											</Badge>
@@ -150,7 +158,7 @@ function Projets({ authUser }) {
 				</Row>
 			</Container>
 		</main>
-	);
+	)
 }
 
-export default Projets;
+export default Projets

@@ -1,0 +1,109 @@
+/* AdminCVManager_style.css */
+/* =====================================================
+   Cadre "chapitre" pour l'admin CV
+===================================================== */
+
+/* Conteneur principal */
+.admin-cv-card {
+	border-radius: 16px;
+	background: #ffffff;
+	border: 1px solid rgba(15, 23, 42, 0.08);
+	box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+/* Header (titre + bouton reload) */
+.admin-cv-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+/* Messages */
+.admin-cv-alert {
+	border-radius: 14px;
+}
+
+/* Bloc select section */
+.admin-cv-form label {
+	font-weight: 800;
+	color: #0f172a;
+}
+
+/* Carte aperçu */
+.admin-cv-preview {
+	border-radius: 16px;
+	background: #ffffff;
+	border: 1px solid rgba(15, 23, 42, 0.08);
+	box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+.admin-cv-preview-title {
+	margin: 0 0 10px;
+	font-size: 1.05rem;
+	font-weight: 800;
+	color: #0f172a;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.admin-cv-preview-title::before {
+	content: "";
+	width: 10px;
+	height: 10px;
+	border-radius: 3px;
+	background: #f97316; /* orange-500 */
+	box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
+}
+
+/* Listes propres dans l'aperçu */
+.admin-cv-clean-list {
+	margin: 0;
+	padding-left: 1.2rem;
+}
+
+.admin-cv-clean-list li {
+	margin: 6px 0;
+	line-height: 1.45;
+}
+
+/* Form ajout */
+.admin-cv-add {
+	border-radius: 16px;
+	background: rgba(14, 165, 233, 0.06);
+	border: 1px solid rgba(14, 165, 233, 0.18);
+	padding: 12px;
+}
+
+/* Liste des items */
+.admin-cv-list .list-group-item {
+	border-color: rgba(15, 23, 42, 0.08);
+}
+
+/* Ligne item */
+.admin-cv-item {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.admin-cv-item-text {
+	color: #0f172a;
+}
+
+/* Badges actif/inactif */
+.admin-cv-status-badge {
+	border-radius: 999px;
+	font-weight: 800;
+	letter-spacing: 0.2px;
+	padding: 0.45em 0.65em;
+}
+
+/* Boutons actions : un peu plus "chips" */
+.admin-cv-actions .btn {
+	border-radius: 12px;
+	font-weight: 700;
+}

@@ -1,0 +1,161 @@
+/* CVCompetences_style.css */
+/* =====================================================
+   Anti-superposition (header fixe/sticky)
+===================================================== */
+:root {
+	--app-header-height: 80px; /* ajuste si besoin */
+}
+
+/* =====================================================
+   Base layout
+===================================================== */
+.page-content {
+	width: 100%;
+	max-width: none;
+	margin: 0;
+
+	/* Décalage vers le bas pour éviter que le header recouvre le titre */
+	padding: calc(24px + var(--app-header-height)) 16px 48px;
+}
+
+/* =====================================================
+   Titre page (style chapter header)
+===================================================== */
+.cv-title {
+	margin: 18px 0 18px;
+	padding: 14px 16px;
+	border-radius: 14px;
+	background: linear-gradient(135deg, #0ea5e9 0%, #22c55e 100%);
+	color: #fff;
+	box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2);
+
+	/* annule les bordures bootstrap que tu avais avant */
+	border-bottom: 0 !important;
+}
+
+.cv-title {
+	font-size: 1.8rem;
+	font-weight: 800;
+	letter-spacing: 0.2px;
+	display: inline-block;
+}
+
+@media (max-width: 576px) {
+	.cv-title {
+		font-size: 1.35rem;
+	}
+}
+
+/* =====================================================
+   States (loading / error)
+===================================================== */
+.cv-loading {
+	padding: 18px;
+	border-radius: 16px;
+	background: #ffffff;
+	border: 1px solid rgba(15, 23, 42, 0.08);
+	box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+.cv-error {
+	border-radius: 14px;
+	border: 1px solid rgba(220, 38, 38, 0.25);
+}
+
+/* =====================================================
+   Cards sections = style chapter-card
+===================================================== */
+.cv-section-card {
+	border-radius: 16px;
+	background: #ffffff;
+	border: 1px solid rgba(15, 23, 42, 0.08);
+	box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+
+	transition:
+		transform 120ms ease,
+		box-shadow 160ms ease,
+		filter 160ms ease,
+		border-color 160ms ease;
+}
+
+.cv-section-card:hover {
+	transform: translateY(-2px);
+	filter: brightness(1.01);
+	box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+	border-color: rgba(14, 165, 233, 0.35);
+}
+
+.cv-section-card .card-body {
+	padding: 18px;
+}
+
+/* =====================================================
+   En-tête de section (titre + badge)
+===================================================== */
+.cv-section-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.cv-section-title {
+	margin: 0;
+	font-size: 1.15rem;
+	font-weight: 800;
+	color: #0f172a;
+
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.cv-section-title::before {
+	content: "";
+	width: 10px;
+	height: 10px;
+	border-radius: 3px;
+	background: #f97316; /* orange-500 */
+	box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
+}
+
+.cv-count-badge {
+	font-weight: 800;
+	letter-spacing: 0.2px;
+	border-radius: 999px;
+	padding: 0.45em 0.65em;
+}
+
+/* Séparateur */
+.cv-divider {
+	margin: 14px 0;
+	border-top: 1px dashed rgba(15, 23, 42, 0.18);
+	opacity: 1;
+}
+
+/* =====================================================
+   Liste propre
+===================================================== */
+.cv-list {
+	margin: 0;
+	padding-left: 1.2rem;
+}
+
+.cv-list li {
+	margin: 6px 0;
+	line-height: 1.45;
+	color: #0f172a;
+}
+
+.cv-item-desc {
+	margin-top: 2px;
+	line-height: 1.4;
+}
+
+/* =====================================================
+   Texte "vide"
+===================================================== */
+.cv-empty {
+	margin: 0;
+	color: rgba(15, 23, 42, 0.7);
+}

@@ -1,0 +1,78 @@
+/* Sommaire_Exercice_Angular_SDBM_style.css */
+/* Même style “chapitre” que tes autres pages */
+
+:root {
+	--app-header-height: 80px; /* ajuste si besoin */
+}
+
+/* Base layout (évite que le header recouvre le contenu) */
+.page-content {
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	padding: calc(24px + var(--app-header-height)) 16px 48px;
+}
+
+/* Bandeau (header de page) */
+.course-header {
+	margin: 18px 0 18px;
+	padding: 14px 16px;
+	border-radius: 14px;
+	background: linear-gradient(135deg, #0ea5e9 0%, #22c55e 100%);
+	color: #fff;
+	box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2);
+}
+
+.course-title {
+	margin: 0;
+	font-size: 1.6rem;
+	font-weight: 800;
+	letter-spacing: 0.2px;
+}
+
+.course-subtitle {
+	margin: 8px 0 0;
+	font-size: 1rem;
+	opacity: 0.95;
+	line-height: 1.4;
+}
+
+@media (max-width: 576px) {
+	.course-title {
+		font-size: 1.25rem;
+	}
+}
+
+/* Badge “Cours” */
+.course-badge {
+	border-radius: 999px;
+	font-weight: 800;
+	letter-spacing: 0.2px;
+	padding: 0.45em 0.65em;
+}
+
+/* Cards */
+.course-card {
+	border-radius: 16px;
+	background: #ffffff;
+	border: 1px solid rgba(15, 23, 42, 0.08);
+	box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.course-card-header {
+	border-top-left-radius: 16px;
+	border-top-right-radius: 16px;
+	background: #0d6efd; /* bootstrap primary */
+	color: #fff;
+}
+
+/* Optionnel : adoucir les items de la liste */
+.course-card .list-group-item {
+	border-color: rgba(15, 23, 42, 0.08);
+}
+
+/* Optionnel : boutons plus “chapitre” */
+.course-card .btn {
+	border-radius: 12px;
+	font-weight: 700;
+}

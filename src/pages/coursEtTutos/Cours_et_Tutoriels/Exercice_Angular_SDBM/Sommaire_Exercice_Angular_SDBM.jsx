@@ -1,90 +1,102 @@
 // Sommaire_Exercice_Angular_SDBM.jsx
+import { useEffect, useMemo, useState } from "react"
+import { Container, Card, ListGroup, Badge, Spinner, Alert } from "react-bootstrap"
+import { Link } from "react-router-dom"
 
-import { useEffect, useMemo, useState } from "react";
-import { Container, Card, ListGroup, Badge, Spinner, Alert } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import Banniere from "../../../../components/Banniere/Banniere.jsx"
+import BanniereIsConnected from "../../../../components/Banniere_isConnected/Banniere_isConnected.jsx"
+import { API_BASE } from "../../../../config/api.js"
 
-import Banniere from "../../../../components/Banniere/Banniere.jsx";
-import BanniereIsConnected from "../../../../components/Banniere_isConnected/Banniere_isConnected.jsx";
-import { API_BASE } from "../../../../config/api.js";
+import "./Sommaire_Exercice_Angular_SDBM_style.css"
 
 export default function Sommaire_Exercice_Angular_SDBM({ authUser }) {
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
-	const [chapters, setChapters] = useState([]);
+	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState(null)
+	const [chapters, setChapters] = useState([])
 
 	// ✅ slug qui doit correspondre EXACTEMENT à la BDD
-	const courseSlug = "angular-sdbm";
+	const courseSlug = "angular-sdbm"
 
 	// UI guard si pas connecté
 	useEffect(() => {
 		if (!authUser) {
-			setLoading(false);
-			setError(null);
-			setChapters([]);
+			setLoading(false)
+			setError(null)
+			setChapters([])
 		}
-	}, [authUser]);
+	}, [authUser])
 
 	useEffect(() => {
-		if (!authUser) return;
+		if (!authUser) return
 
-		const controller = new AbortController();
+		const controller = new AbortController()
 
 		const run = async () => {
-			setLoading(true);
-			setError(null);
+			setLoading(true)
+			setError(null)
 
 			try {
 				const res = await fetch(
-					`${API_BASE}/coursEtTutos-chapters.php?course_slug=${encodeURIComponent(courseSlug)}`,
+					`${API_BASE}/coursEtTutos-chapters.php?course_slug=${encodeURIComponent(
+						courseSlug,
+					)}`,
 					{
 						credentials: "include",
 						signal: controller.signal,
-					}
-				);
+					},
+				)
 
-				const data = await res.json();
+				const data = await res.json()
 
 				if (!res.ok || !data?.success) {
-					throw new Error(data?.error || "Erreur chargement sommaire Angular SDBM");
+					throw new Error(data?.error || "Erreur chargement sommaire Angular SDBM")
 				}
 
-				setChapters(Array.isArray(data.chapters) ? data.chapters : []);
+				setChapters(Array.isArray(data.chapters) ? data.chapters : [])
 			} catch (e) {
 				if (e.name !== "AbortError") {
-					setError(e?.message || "Erreur chargement chapitres");
+					setError(e?.message || "Erreur chargement chapitres")
 				}
 			} finally {
-				setLoading(false);
+				setLoading(false)
 			}
-		};
+		}
 
-		run();
-		return () => controller.abort();
-	}, [authUser, courseSlug]);
+		run()
+		return () => controller.abort()
+	}, [authUser, courseSlug])
 
 	const sorted = useMemo(() => {
 		return [...chapters].sort(
-			(a, b) => (Number(a.position) || 0) - (Number(b.position) || 0)
-		);
-	}, [chapters]);
+			(a, b) => (Number(a.position) || 0) - (Number(b.position) || 0),
+		)
+	}, [chapters])
 
+	// --- NOT CONNECTED
 	if (!authUser) {
 		return (
-			<main className="flex-grow-1 overflow-auto">
+			<main className="page-content flex-grow-1 overflow-auto">
 				<Banniere />
+
 				<Container className="my-5">
-					<h1 className="mb-4">Exercice Angular SDBM — Sommaire</h1>
+					<header className="course-header">
+						<h1 className="course-title mb-2">Exercice Angular SDBM — Sommaire</h1>
+						<p className="course-subtitle mb-0">
+							Tu dois être connecté pour accéder à ce cours.
+						</p>
+					</header>
+
 					<Alert variant="warning" className="mb-0">
 						Tu dois être connecté pour accéder à ce cours.
 					</Alert>
 				</Container>
 			</main>
-		);
+		)
 	}
 
+	// --- CONNECTED
 	return (
-		<main className="flex-grow-1 overflow-auto">
+		<main className="page-content flex-grow-1 overflow-auto">
 			<Banniere />
 
 			{authUser && (
@@ -94,9 +106,17 @@ export default function Sommaire_Exercice_Angular_SDBM({ authUser }) {
 			)}
 
 			<Container className="my-5">
-				<div className="d-flex align-items-center justify-content-between mb-3">
-					<h1 className="mb-0">Exercice Angular SDBM — Sommaire</h1>
-					<Badge bg="primary">Cours</Badge>
+				<div className="d-flex align-items-center justify-content-between mb-3 gap-2">
+					<header className="course-header flex-grow-1">
+						<h1 className="course-title mb-2">Exercice Angular SDBM — Sommaire</h1>
+						<p className="course-subtitle mb-0">
+							Accès aux chapitres (setup, CRUD, selects, etc.).
+						</p>
+					</header>
+
+					<Badge bg="primary" className="course-badge">
+						Cours
+					</Badge>
 				</div>
 
 				{loading && (
@@ -108,8 +128,8 @@ export default function Sommaire_Exercice_Angular_SDBM({ authUser }) {
 				{error && <Alert variant="danger">{error}</Alert>}
 
 				{!loading && !error && (
-					<Card className="shadow-sm mb-4">
-						<Card.Header className="bg-primary text-white">
+					<Card className="course-card shadow-sm mb-4">
+						<Card.Header className="course-card-header">
 							<strong>Chapitres</strong>
 						</Card.Header>
 
@@ -120,8 +140,8 @@ export default function Sommaire_Exercice_Angular_SDBM({ authUser }) {
 								</ListGroup.Item>
 							) : (
 								sorted.map((ch, idx) => {
-									const number = idx + 1;
-									const to = `/coursEtTutos/${courseSlug}/${ch.slug}`;
+									const number = idx + 1
+									const to = `/coursEtTutos/${courseSlug}/${ch.slug}`
 
 									return (
 										<ListGroup.Item
@@ -136,14 +156,14 @@ export default function Sommaire_Exercice_Angular_SDBM({ authUser }) {
 												Ouvrir
 											</Link>
 										</ListGroup.Item>
-									);
+									)
 								})
 							)}
 						</ListGroup>
 					</Card>
 				)}
 
-				<Card className="shadow-sm">
+				<Card className="course-card shadow-sm">
 					<Card.Body className="d-flex gap-2 flex-wrap">
 						<Link className="btn btn-outline-secondary btn-sm" to="/coursEtTutos">
 							← Retour Cours &amp; Tutos
@@ -159,5 +179,5 @@ export default function Sommaire_Exercice_Angular_SDBM({ authUser }) {
 				</Card>
 			</Container>
 		</main>
-	);
+	)
 }

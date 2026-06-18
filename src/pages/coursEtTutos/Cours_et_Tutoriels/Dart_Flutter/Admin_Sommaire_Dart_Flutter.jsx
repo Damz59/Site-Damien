@@ -1,6 +1,5 @@
 // src/pages/coursEtTutos/Cours_et_Tutoriels/DartFlutter/Admin_Sommaire_DartFlutter.jsx
-
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react"
 import {
 	Container,
 	Card,
@@ -11,104 +10,101 @@ import {
 	Button,
 	Form,
 	Modal,
-} from "react-bootstrap";
+} from "react-bootstrap"
+import { Link } from "react-router-dom"
 
-import Banniere from "../../../../components/Banniere/Banniere.jsx";
-import BanniereIsConnected from "../../../../components/Banniere_isConnected/Banniere_isConnected.jsx";
-import { API_BASE } from "../../../../config/api";
-
-import "./Admin_Sommaire_Dart_Flutter.css";
+import Banniere from "../../../../components/Banniere/Banniere.jsx"
+import BanniereIsConnected from "../../../../components/Banniere_isConnected/Banniere_isConnected.jsx"
+import { API_BASE } from "../../../../config/api"
+import "./Admin_Sommaire_Dart_Flutter.css"
 
 export default function Admin_Sommaire_DartFlutter({ authUser }) {
-	// ✅ slug du cours (côté BDD/API). Choisis un slug simple et stable.
-	// Exemple: "dart_flutter" ou "flutter" ou "dart"
-	const courseSlug = "dart_flutter";
+	// ✅ slug du cours (côté BDD/API)
+	const courseSlug = "dart_flutter"
 
-	const [loading, setLoading] = useState(true);
-	const [saving, setSaving] = useState(false);
-	const [error, setError] = useState(null);
-	const [chapters, setChapters] = useState([]);
+	const [loading, setLoading] = useState(true)
+	const [saving, setSaving] = useState(false)
+	const [error, setError] = useState(null)
+	const [chapters, setChapters] = useState([])
 
 	// Modal (create/edit)
-	const [showModal, setShowModal] = useState(false);
-	const [editing, setEditing] = useState(null); // chapter object or null
+	const [showModal, setShowModal] = useState(false)
+	const [editing, setEditing] = useState(null) // chapter object or null
 	const [form, setForm] = useState({
 		title: "",
 		slug: "",
 		position: 0,
 		active: true,
-	});
+	})
 
 	const sorted = useMemo(() => {
 		return [...chapters].sort(
-			(a, b) => (Number(a.position) || 0) - (Number(b.position) || 0)
-		);
-	}, [chapters]);
+			(a, b) => (Number(a.position) || 0) - (Number(b.position) || 0),
+		)
+	}, [chapters])
 
 	const resetForm = () => {
-		setForm({ title: "", slug: "", position: 0, active: true });
-		setEditing(null);
-	};
+		setForm({ title: "", slug: "", position: 0, active: true })
+		setEditing(null)
+	}
 
 	const openCreate = () => {
-		resetForm();
-		// position par défaut : à la fin
+		resetForm()
 		const nextPos =
-			sorted.length > 0 ? (Number(sorted[sorted.length - 1].position) || 0) + 1 : 1;
-
-		setForm((f) => ({ ...f, position: nextPos }));
-		setShowModal(true);
-	};
+			sorted.length > 0 ? (Number(sorted[sorted.length - 1].position) || 0) + 1 : 1
+		setForm((f) => ({ ...f, position: nextPos }))
+		setShowModal(true)
+	}
 
 	const openEdit = (ch) => {
-		setEditing(ch);
+		setEditing(ch)
 		setForm({
 			title: ch.title ?? "",
 			slug: ch.slug ?? "",
 			position: Number(ch.position) || 0,
 			active: Number(ch.active) === 1 || ch.active === true,
-		});
-		setShowModal(true);
-	};
+		})
+		setShowModal(true)
+	}
 
 	const fetchChapters = async () => {
-		setLoading(true);
-		setError(null);
+		setLoading(true)
+		setError(null)
 
 		try {
 			const res = await fetch(
 				`${API_BASE}/coursEtTutos-chapters-admin.php?course_slug=${encodeURIComponent(courseSlug)}`,
-				{ credentials: "include" }
-			);
-			const data = await res.json();
+				{ credentials: "include" },
+			)
+			const data = await res.json()
 
 			if (!res.ok || !data?.success) {
-				throw new Error(data?.error || "Erreur chargement chapitres (admin)");
+				throw new Error(data?.error || "Erreur chargement chapitres (admin)")
 			}
 
-			setChapters(Array.isArray(data.chapters) ? data.chapters : []);
+			setChapters(Array.isArray(data.chapters) ? data.chapters : [])
 		} catch (e) {
-			setError(e?.message || "Erreur chargement chapitres");
+			setError(e?.message || "Erreur chargement chapitres")
 		} finally {
-			setLoading(false);
+			setLoading(false)
 		}
-	};
+	}
 
 	useEffect(() => {
 		if (!authUser) {
-			setLoading(false);
-			setError(null);
-			setChapters([]);
-			return;
+			setLoading(false)
+			setError(null)
+			setChapters([])
+			return
 		}
-		fetchChapters();
+		fetchChapters()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [authUser]);
+	}, [authUser])
 
 	const saveChapter = async (e) => {
-		e.preventDefault();
-		setSaving(true);
-		setError(null);
+		e.preventDefault()
+		setSaving(true)
+		setError(null)
 
 		const payload = {
 			course_slug: courseSlug,
@@ -116,68 +112,67 @@ export default function Admin_Sommaire_DartFlutter({ authUser }) {
 			slug: form.slug.trim(),
 			position: Number(form.position) || 0,
 			active: form.active ? 1 : 0,
-		};
+		}
 
 		if (!payload.title || !payload.slug) {
-			setSaving(false);
-			setError("Le titre et le slug sont obligatoires.");
-			return;
+			setSaving(false)
+			setError("Le titre et le slug sont obligatoires.")
+			return
 		}
 
 		try {
-			const isEdit = Boolean(editing?.id);
-
+			const isEdit = Boolean(editing?.id)
 			const res = await fetch(`${API_BASE}/coursEtTutos-chapters-admin.php`, {
 				method: isEdit ? "PUT" : "POST",
 				headers: { "Content-Type": "application/json" },
 				credentials: "include",
 				body: JSON.stringify(isEdit ? { id: editing.id, ...payload } : payload),
-			});
+			})
 
-			const data = await res.json();
+			const data = await res.json()
 			if (!res.ok || !data?.success) {
-				throw new Error(data?.error || "Erreur sauvegarde chapitre");
+				throw new Error(data?.error || "Erreur sauvegarde chapitre")
 			}
 
-			setShowModal(false);
-			resetForm();
-			await fetchChapters();
+			setShowModal(false)
+			resetForm()
+			await fetchChapters()
 		} catch (e2) {
-			setError(e2?.message || "Erreur sauvegarde");
+			setError(e2?.message || "Erreur sauvegarde")
 		} finally {
-			setSaving(false);
+			setSaving(false)
 		}
-	};
+	}
 
 	const deleteChapter = async (ch) => {
-		const ok = window.confirm(`Supprimer le chapitre "${ch.title}" ?`);
-		if (!ok) return;
+		const ok = window.confirm(`Supprimer le chapitre "${ch.title}" ?`)
+		if (!ok) return
 
-		setSaving(true);
-		setError(null);
+		setSaving(true)
+		setError(null)
 
 		try {
 			const res = await fetch(
 				`${API_BASE}/coursEtTutos-chapters-admin.php?id=${encodeURIComponent(ch.id)}`,
-				{ method: "DELETE", credentials: "include" }
-			);
+				{ method: "DELETE", credentials: "include" },
+			)
+			const data = await res.json()
 
-			const data = await res.json();
 			if (!res.ok || !data?.success) {
-				throw new Error(data?.error || "Erreur suppression");
+				throw new Error(data?.error || "Erreur suppression")
 			}
 
-			await fetchChapters();
+			await fetchChapters()
 		} catch (e) {
-			setError(e?.message || "Erreur suppression");
+			setError(e?.message || "Erreur suppression")
 		} finally {
-			setSaving(false);
+			setSaving(false)
 		}
-	};
+	}
 
 	const toggleActive = async (ch) => {
-		setSaving(true);
-		setError(null);
+		setSaving(true)
+		setError(null)
 
 		try {
 			const res = await fetch(`${API_BASE}/coursEtTutos-chapters-admin.php`, {
@@ -192,35 +187,35 @@ export default function Admin_Sommaire_DartFlutter({ authUser }) {
 					position: Number(ch.position) || 0,
 					active: Number(ch.active) === 1 ? 0 : 1,
 				}),
-			});
+			})
+			const data = await res.json()
 
-			const data = await res.json();
 			if (!res.ok || !data?.success) {
-				throw new Error(data?.error || "Erreur toggle active");
+				throw new Error(data?.error || "Erreur toggle active")
 			}
 
-			await fetchChapters();
+			await fetchChapters()
 		} catch (e) {
-			setError(e?.message || "Erreur toggle");
+			setError(e?.message || "Erreur toggle")
 		} finally {
-			setSaving(false);
+			setSaving(false)
 		}
-	};
+	}
 
 	// Réordonner simple: échange des positions avec le voisin (2 PUT)
 	const swapPosition = async (idx, direction) => {
-		const a = sorted[idx];
-		const b = sorted[idx + direction];
-		if (!a || !b) return;
+		const a = sorted[idx]
+		const b = sorted[idx + direction]
+		if (!a || !b) return
 
-		setSaving(true);
-		setError(null);
+		setSaving(true)
+		setError(null)
 
 		try {
 			const updates = [
 				{ ...a, position: Number(b.position) || 0 },
 				{ ...b, position: Number(a.position) || 0 },
-			];
+			]
 
 			for (const ch of updates) {
 				const res = await fetch(`${API_BASE}/coursEtTutos-chapters-admin.php`, {
@@ -235,25 +230,25 @@ export default function Admin_Sommaire_DartFlutter({ authUser }) {
 						position: Number(ch.position) || 0,
 						active: Number(ch.active) === 1 ? 1 : 0,
 					}),
-				});
+				})
+				const data = await res.json()
 
-				const data = await res.json();
 				if (!res.ok || !data?.success) {
-					throw new Error(data?.error || "Erreur réordonnancement");
+					throw new Error(data?.error || "Erreur réordonnancement")
 				}
 			}
 
-			await fetchChapters();
+			await fetchChapters()
 		} catch (e) {
-			setError(e?.message || "Erreur réordonnancement");
+			setError(e?.message || "Erreur réordonnancement")
 		} finally {
-			setSaving(false);
+			setSaving(false)
 		}
-	};
+	}
 
 	if (!authUser) {
 		return (
-			<main className="flex-grow-1 overflow-auto">
+			<main className="flex-grow-1 overflow-auto page-content">
 				<Banniere />
 				<Container className="my-5">
 					<h1 className="mb-4">Administration — Dart / Flutter (Sommaire)</h1>
@@ -262,139 +257,156 @@ export default function Admin_Sommaire_DartFlutter({ authUser }) {
 					</Alert>
 				</Container>
 			</main>
-		);
+		)
 	}
 
 	return (
-		<main className="flex-grow-1 overflow-auto">
+		<main className="flex-grow-1 overflow-auto page-content">
 			<Banniere />
 			<div className="mt-3">
 				<BanniereIsConnected authUser={authUser} />
 			</div>
 
-			<Container className="my-5 admin-sommaire-dartflutter">
-				<div className="admin-sommaire-dartflutter__titlebar">
-					<h1 className="mb-0">Administration — Dart / Flutter (Sommaire)</h1>
-					<Badge bg="dark">Admin</Badge>
-				</div>
-
-				{(loading || saving) && (
-					<div className="text-center my-3">
-						<Spinner />
+			<Container className="my-4 admin-sommaire-dartflutter">
+				<header className="chapter-header">
+					<div className="d-flex align-items-center justify-content-between flex-wrap gap-2">
+						<div>
+							<h1 className="chapter-title">Administration — Dart / Flutter (Sommaire)</h1>
+							<p className="chapter-subtitle mb-0">
+								Gère l’ordre, l’activation et les informations des chapitres.
+							</p>
+						</div>
+						<Badge bg="light" text="dark">
+							Admin
+						</Badge>
 					</div>
-				)}
+				</header>
 
-				{error && <Alert variant="danger">{error}</Alert>}
+				<section className="chapter-card">
+					<div className="chapter-section">
+						<h2 className="section-title">Chapitres</h2>
 
-				<Card className="shadow-sm">
-					<Card.Header className="admin-sommaire-dartflutter__cardHeader">
-						<strong>Chapitres</strong>
-						<Button variant="primary" size="sm" onClick={openCreate} disabled={saving}>
-							+ Ajouter un chapitre
-						</Button>
-					</Card.Header>
-
-					<Card.Body>
-						{!loading && sorted.length === 0 ? (
-							<p className="text-muted mb-0">Aucun chapitre pour le moment.</p>
-						) : (
-							<div className="admin-sommaire-dartflutter__tableWrap">
-								<Table responsive hover className="mb-0 align-middle">
-									<thead>
-										<tr>
-											<th className="admin-sommaire-dartflutter__colOrder">Ordre</th>
-											<th>Titre</th>
-											<th>Slug</th>
-											<th className="admin-sommaire-dartflutter__colActive">Actif</th>
-											<th className="admin-sommaire-dartflutter__colActions text-end">
-												Actions
-											</th>
-										</tr>
-									</thead>
-
-									<tbody>
-										{sorted.map((ch, idx) => (
-											<tr key={ch.id ?? ch.slug}>
-												<td>
-													<div className="admin-sommaire-dartflutter__orderBtns">
-														<Button
-															variant="outline-secondary"
-															size="sm"
-															disabled={idx === 0 || saving}
-															onClick={() => swapPosition(idx, -1)}
-														>
-															↑
-														</Button>
-														<Button
-															variant="outline-secondary"
-															size="sm"
-															disabled={idx === sorted.length - 1 || saving}
-															onClick={() => swapPosition(idx, +1)}
-														>
-															↓
-														</Button>
-													</div>
-												</td>
-
-												<td className="fw-semibold">{ch.title}</td>
-
-												<td>
-													<code className="admin-sommaire-dartflutter__code">{ch.slug}</code>
-												</td>
-
-												<td>
-													<Badge
-														bg={Number(ch.active) === 1 ? "success" : "secondary"}
-													>
-														{Number(ch.active) === 1 ? "Oui" : "Non"}
-													</Badge>
-												</td>
-
-												<td className="text-end">
-													<div className="admin-sommaire-dartflutter__actions">
-														<Button
-															variant="outline-success"
-															size="sm"
-															disabled={saving}
-															onClick={() => toggleActive(ch)}
-														>
-															{Number(ch.active) === 1 ? "Désactiver" : "Activer"}
-														</Button>
-
-														<Button
-															variant="outline-primary"
-															size="sm"
-															disabled={saving}
-															onClick={() => openEdit(ch)}
-														>
-															Éditer
-														</Button>
-
-														<Button
-															variant="outline-danger"
-															size="sm"
-															disabled={saving}
-															onClick={() => deleteChapter(ch)}
-														>
-															Supprimer
-														</Button>
-													</div>
-												</td>
-											</tr>
-										))}
-									</tbody>
-								</Table>
+						{(loading || saving) && (
+							<div className="text-center my-3">
+								<Spinner />
 							</div>
 						)}
-					</Card.Body>
-				</Card>
+
+						{error && <Alert variant="danger">{error}</Alert>}
+
+						<Card className="shadow-sm">
+							<Card.Header className="admin-sommaire-dartflutter__cardHeader">
+								<strong>Liste</strong>
+								<Button variant="primary" size="sm" onClick={openCreate} disabled={saving}>
+									+ Ajouter un chapitre
+								</Button>
+							</Card.Header>
+
+							<Card.Body>
+								{!loading && sorted.length === 0 ? (
+									<p className="text-muted mb-0">Aucun chapitre pour le moment.</p>
+								) : (
+									<div className="admin-sommaire-dartflutter__tableWrap">
+										<Table responsive hover className="mb-0 align-middle">
+											<thead>
+												<tr>
+													<th className="admin-sommaire-dartflutter__colOrder">Ordre</th>
+													<th>Titre</th>
+													<th>Slug</th>
+													<th className="admin-sommaire-dartflutter__colActive">Actif</th>
+													<th className="admin-sommaire-dartflutter__colActions text-end">
+														Actions
+													</th>
+												</tr>
+											</thead>
+
+											<tbody>
+												{sorted.map((ch, idx) => (
+													<tr key={ch.id ?? ch.slug}>
+														<td>
+															<div className="admin-sommaire-dartflutter__orderBtns">
+																<Button
+																	variant="outline-secondary"
+																	size="sm"
+																	disabled={idx === 0 || saving}
+																	onClick={() => swapPosition(idx, -1)}
+																>
+																	↑
+																</Button>
+																<Button
+																	variant="outline-secondary"
+																	size="sm"
+																	disabled={idx === sorted.length - 1 || saving}
+																	onClick={() => swapPosition(idx, +1)}
+																>
+																	↓
+																</Button>
+															</div>
+														</td>
+
+														<td className="fw-semibold">{ch.title}</td>
+
+														<td>
+															<code className="admin-sommaire-dartflutter__code">{ch.slug}</code>
+														</td>
+
+														<td>
+															<Badge bg={Number(ch.active) === 1 ? "success" : "secondary"}>
+																{Number(ch.active) === 1 ? "Oui" : "Non"}
+															</Badge>
+														</td>
+
+														<td className="text-end">
+															<div className="admin-sommaire-dartflutter__actions">
+																<Button
+																	variant="outline-success"
+																	size="sm"
+																	disabled={saving}
+																	onClick={() => toggleActive(ch)}
+																>
+																	{Number(ch.active) === 1 ? "Désactiver" : "Activer"}
+																</Button>
+
+																<Button
+																	variant="outline-primary"
+																	size="sm"
+																	disabled={saving}
+																	onClick={() => openEdit(ch)}
+																>
+																	Éditer
+																</Button>
+
+																<Button
+																	variant="outline-danger"
+																	size="sm"
+																	disabled={saving}
+																	onClick={() => deleteChapter(ch)}
+																>
+																	Supprimer
+																</Button>
+															</div>
+														</td>
+													</tr>
+												))}
+											</tbody>
+										</Table>
+									</div>
+								)}
+							</Card.Body>
+						</Card>
+
+						<nav className="chapter-navigation">
+							<Link className="btn-prev" to="/admin/coursEtTutos">
+								← Administration Cours & Tutos
+							</Link>
+						</nav>
+					</div>
+				</section>
 			</Container>
 
 			<Modal show={showModal} onHide={() => setShowModal(false)} centered>
 				<Modal.Header closeButton>
-					<Modal.Title>
-						{editing ? "Modifier le chapitre" : "Ajouter un chapitre"}
-					</Modal.Title>
+					<Modal.Title>{editing ? "Modifier le chapitre" : "Ajouter un chapitre"}</Modal.Title>
 				</Modal.Header>
 
 				<Form onSubmit={saveChapter}>
@@ -441,11 +453,7 @@ export default function Admin_Sommaire_DartFlutter({ authUser }) {
 					</Modal.Body>
 
 					<Modal.Footer>
-						<Button
-							variant="secondary"
-							onClick={() => setShowModal(false)}
-							disabled={saving}
-						>
+						<Button variant="secondary" onClick={() => setShowModal(false)} disabled={saving}>
 							Annuler
 						</Button>
 						<Button variant="primary" type="submit" disabled={saving}>
@@ -455,5 +463,5 @@ export default function Admin_Sommaire_DartFlutter({ authUser }) {
 				</Form>
 			</Modal>
 		</main>
-	);
+	)
 }

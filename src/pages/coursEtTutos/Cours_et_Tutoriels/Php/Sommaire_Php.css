@@ -1,5 +1,6 @@
-/* CoursEtTutos.css */
-/* Thème inspiré des chapitres (layout + header + cards + navigation) */
+/* Sommaire_Php.css
+   Thème inspiré des chapitres (layout + header + cards + navigation)
+*/
 
 /* =====================================================
    Anti-superposition (header fixe/sticky)
@@ -19,25 +20,35 @@
 }
 
 /* =====================================================
+   Scope page Sommaire PHP (optionnel mais conseillé)
+===================================================== */
+.sommaire-php {
+	--sp-accent-1: #0ea5e9;
+	--sp-accent-2: #2563eb;
+	--sp-accent-3: #22c55e;
+	--sp-text: #0f172a;
+}
+
+/* =====================================================
    Chapter header (banner)
 ===================================================== */
-.chapter-header {
+.sommaire-php .chapter-header {
 	margin: 18px 0 18px;
 	padding: 14px 16px;
 	border-radius: 14px;
-	background: linear-gradient(135deg, #0ea5e9 0%, #22c55e 100%);
+	background: linear-gradient(135deg, var(--sp-accent-1) 0%, var(--sp-accent-3) 100%);
 	color: #fff;
 	box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2);
 }
 
-.chapter-title {
+.sommaire-php .chapter-title {
 	margin: 0;
 	font-size: 1.8rem;
 	font-weight: 800;
 	letter-spacing: 0.2px;
 }
 
-.chapter-subtitle {
+.sommaire-php .chapter-subtitle {
 	margin: 8px 0 0;
 	font-size: 1rem;
 	opacity: 0.95;
@@ -47,7 +58,7 @@
 /* =====================================================
    Main card container
 ===================================================== */
-.chapter-card {
+.sommaire-php .chapter-card {
 	margin-top: 14px;
 	padding: 18px;
 	border-radius: 16px;
@@ -59,23 +70,23 @@
 /* =====================================================
    Sections & titles
 ===================================================== */
-.chapter-section + .chapter-section {
+.sommaire-php .chapter-section + .chapter-section {
 	margin-top: 18px;
 	padding-top: 16px;
 	border-top: 1px dashed rgba(15, 23, 42, 0.18);
 }
 
-.section-title {
+.sommaire-php .section-title {
 	margin: 0 0 10px;
 	font-size: 1.5rem;
 	font-weight: 800;
-	color: #0f172a;
+	color: var(--sp-text);
 	display: flex;
 	align-items: center;
 	gap: 10px;
 }
 
-.section-title::before {
+.sommaire-php .section-title::before {
 	content: "";
 	width: 10px;
 	height: 10px;
@@ -84,23 +95,15 @@
 	box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
 }
 
-/* Paragraphs inside chapter-card */
-.chapter-card p {
-	margin: 0 0 10px;
-	line-height: 1.55;
-	color: #0f172a;
-}
-.chapter-card p:last-child {
-	margin-bottom: 0;
+/* =====================================================
+   ListGroup (chapitres)
+===================================================== */
+.sommaire-php .list-group-item {
+	padding: 12px 12px;
 }
 
-/* Code look (optional) */
-.chapter-card code {
-	padding: 2px 6px;
-	border-radius: 8px;
-	background: rgba(15, 23, 42, 0.06);
-	border: 1px solid rgba(15, 23, 42, 0.08);
-	font-size: 0.95em;
+.sommaire-php .list-group-item:hover {
+	background: rgba(15, 23, 42, 0.02);
 }
 
 /* =====================================================
@@ -134,12 +137,12 @@
 
 .chapter-navigation .btn-next {
 	color: #fff;
-	background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 55%, #1d4ed8 100%);
+	background: linear-gradient(135deg, var(--sp-accent-1) 0%, var(--sp-accent-2) 55%, #1d4ed8 100%);
 	box-shadow: 0 14px 30px rgba(37, 99, 235, 0.25), 0 8px 18px rgba(14, 165, 233, 0.2);
 }
 
 .chapter-navigation .btn-prev {
-	color: #0f172a;
+	color: var(--sp-text);
 	background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
 	border: 1px solid rgba(15, 23, 42, 0.1);
 	box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
@@ -154,58 +157,4 @@
 .chapter-navigation .btn-next:active,
 .chapter-navigation .btn-prev:active {
 	transform: translateY(0px) scale(0.99);
-}
-
-/* =====================================================
-   Cartes cours (grid)
-===================================================== */
-.cet-course-card {
-	border-radius: 16px;
-	border: 1px solid rgba(15, 23, 42, 0.08);
-	box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
-	transition: transform 140ms ease, box-shadow 180ms ease, filter 180ms ease;
-	color: inherit;
-	background: #fff;
-}
-
-.cet-course-card:hover {
-	transform: translateY(-2px);
-	filter: brightness(1.01);
-	box-shadow: 0 16px 34px rgba(15, 23, 42, 0.12);
-}
-
-/* Bandeau top (optionnel, si tu l’utilises dans le JSX) */
-.cet-course-card .cet-course-top {
-	border-radius: 16px 16px 0 0;
-	padding: 10px 12px;
-	font-weight: 800;
-	color: #fff;
-	background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
-	text-align: center;
-}
-
-/* Logo cours */
-.cet-course-logo {
-	max-width: 60%;
-	max-height: 90px;
-	object-fit: contain;
-	margin: 10px auto 0;
-	display: block;
-	filter: drop-shadow(0 6px 12px rgba(15, 23, 42, 0.15));
-}
-
-/* Footer titre (optionnel, si tu l’utilises dans le JSX) */
-.cet-course-footer {
-	border-top: 1px dashed rgba(15, 23, 42, 0.18);
-	padding: 10px 12px;
-	font-weight: 900;
-	text-align: center;
-	color: #0f172a;
-	border-radius: 0 0 16px 16px;
-}
-
-@media (max-width: 576px) {
-	.cet-course-logo {
-		max-width: 75%;
-	}
 }

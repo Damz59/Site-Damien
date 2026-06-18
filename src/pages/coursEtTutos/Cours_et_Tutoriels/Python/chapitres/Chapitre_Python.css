@@ -1,0 +1,330 @@
+/* Chapitre_Python.css */
+
+/* =====================================================
+   Anti-superposition (header fixe/sticky)
+===================================================== */
+:root {
+	--app-header-height: 80px; /* ajuste si besoin (ex: 64px, 72px, 90px) */
+}
+
+/* =====================================================
+   Base layout
+===================================================== */
+.page-content {
+	width: 100%;
+	max-width: none; /* enlève la limite */
+	margin: 0; /* enlève le centrage */
+
+	/* Décalage vers le bas pour éviter que le header recouvre le titre */
+	padding: calc(24px + var(--app-header-height)) 16px 48px;
+}
+
+/* =====================================================
+   Logos (Python + VS Code / etc.) - avec fond
+   (Tu peux garder ces classes même si tu n’as pas de logos)
+===================================================== */
+.stack-logos {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 14px;
+	margin-bottom: 14px;
+
+	/* fond type "paragraphe" */
+	padding: 10px 12px;
+	border-radius: 12px;
+	background: #ffffff;
+	border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.Python-logo,
+.VSCode-logo {
+	width: 56px;
+	height: 56px;
+	object-fit: contain;
+	filter: drop-shadow(0 6px 12px rgba(15, 23, 42, 0.15));
+}
+
+.logo-plus {
+	font-size: 1.35rem;
+	font-weight: 900;
+	color: #0f172a;
+	opacity: 0.7;
+}
+
+/* Responsive logos */
+@media (max-width: 576px) {
+	.Python-logo,
+	.VSCode-logo {
+		width: 46px;
+		height: 46px;
+	}
+}
+
+/* =====================================================
+   Chapter header (banner)
+===================================================== */
+.chapter-header {
+	margin: 18px 0 18px;
+	padding: 14px 16px;
+	border-radius: 14px;
+	background: linear-gradient(135deg, #0ea5e9 0%, #22c55e 100%);
+	color: #fff;
+	box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2);
+}
+
+.chapter-title {
+	margin: 0;
+	font-size: 1.8rem;
+	font-weight: 800;
+	letter-spacing: 0.2px;
+}
+
+.chapter-subtitle {
+	margin: 8px 0 0;
+	font-size: 1rem;
+	opacity: 0.95;
+	line-height: 1.4;
+}
+
+/* Links inside header */
+.chapter-header a {
+	color: #fff;
+	text-decoration: underline;
+}
+.chapter-header a:hover {
+	opacity: 0.9;
+}
+
+/* =====================================================
+   Main card container
+===================================================== */
+.chapter-card {
+	margin-top: 14px;
+	padding: 18px;
+	border-radius: 16px;
+	background: #ffffff;
+	border: 1px solid rgba(15, 23, 42, 0.08);
+	box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+/* =====================================================
+   Image
+===================================================== */
+.chapter-image {
+	width: 100%;
+	border-radius: 14px;
+	border: 1px solid rgba(15, 23, 42, 0.1);
+	box-shadow: 0 8px 18px rgba(15, 23, 42, 0.1);
+	margin-bottom: 18px;
+}
+
+/* Optionnel : si tu utilises className="chapter-image img-fluid" */
+.chapter-image.img-fluid {
+	display: block;
+}
+
+/* =====================================================
+   Sections & titles
+===================================================== */
+.chapter-section + .chapter-section {
+	margin-top: 18px;
+	padding-top: 16px;
+	border-top: 1px dashed rgba(15, 23, 42, 0.18);
+}
+
+/* A) : titres de section */
+.section-title {
+	margin: 0 0 10px;
+	font-size: 1.5rem; /* A) plus grand que les sous-titres */
+	font-weight: 800;
+	color: #0f172a;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.section-title::before {
+	content: "";
+	width: 10px;
+	height: 10px;
+	border-radius: 3px;
+	background: #f97316; /* orange-500 */
+	box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
+}
+
+/* 1) : sous-titres */
+.chapter-section h3 {
+	margin: 14px 0 8px;
+	font-size: 1.05rem;
+	font-weight: 800;
+	color: #0f172a;
+}
+
+/* (option) si tu utilises aussi des h4 */
+.chapter-section h4 {
+	margin: 10px 0 6px;
+	font-size: 0.98rem;
+	font-weight: 800;
+	color: #0f172a;
+}
+
+/* Paragraphs */
+.chapter-card p {
+	margin: 0 0 10px;
+	line-height: 1.55;
+	color: #0f172a;
+}
+.chapter-card p:last-child {
+	margin-bottom: 0;
+}
+
+/* =====================================================
+   Lists (ul/ol) “propres”
+===================================================== */
+.clean-list {
+	margin: 0;
+	padding-left: 1.2rem;
+}
+.clean-list li {
+	margin: 6px 0;
+	line-height: 1.45;
+}
+
+/* =====================================================
+   Callout
+===================================================== */
+.chapter-callout {
+	margin-top: 12px;
+	padding: 12px 14px;
+	border-radius: 12px;
+	background: rgba(14, 165, 233, 0.1);
+	border: 1px solid rgba(14, 165, 233, 0.25);
+	color: #0f172a;
+}
+
+/* =====================================================
+   Code tags look nicer (optional)
+===================================================== */
+.chapter-card code {
+	padding: 2px 6px;
+	border-radius: 8px;
+	background: rgba(15, 23, 42, 0.06);
+	border: 1px solid rgba(15, 23, 42, 0.08);
+	font-size: 0.95em;
+}
+
+.application-properties_code,
+.code {
+	margin: 0;
+}
+
+/* =========================
+   Navigation chapitres
+========================= */
+.chapter-navigation {
+	margin-top: 26px;
+
+	/* centrage */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 14px;
+	flex-wrap: wrap;
+}
+
+/* base commune boutons */
+.chapter-navigation .btn-prev,
+.chapter-navigation .btn-next {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	min-width: 190px;
+	padding: 12px 18px;
+	border-radius: 14px;
+	font-weight: 800;
+	letter-spacing: 0.2px;
+	border: 0;
+	text-decoration: none;
+	cursor: pointer;
+	transition:
+		transform 120ms ease,
+		box-shadow 160ms ease,
+		filter 160ms ease,
+		opacity 160ms ease;
+}
+
+/* bouton "Suivant" : beau bleu dégradé */
+.chapter-navigation .btn-next {
+	color: #fff;
+	background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 55%, #1d4ed8 100%);
+	box-shadow:
+		0 14px 30px rgba(37, 99, 235, 0.25),
+		0 8px 18px rgba(14, 165, 233, 0.2);
+}
+
+/* bouton "Précédent" : style secondaire (gris/bleuté) */
+.chapter-navigation .btn-prev {
+	color: #0f172a;
+	background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+	border: 1px solid rgba(15, 23, 42, 0.1);
+	box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+}
+
+/* hover / active */
+.chapter-navigation .btn-next:hover,
+.chapter-navigation .btn-prev:hover {
+	transform: translateY(-1px);
+	filter: brightness(1.03);
+}
+.chapter-navigation .btn-next:active,
+.chapter-navigation .btn-prev:active {
+	transform: translateY(0px) scale(0.99);
+}
+
+/* état désactivé */
+.chapter-navigation .btn-prev:disabled {
+	opacity: 0.55;
+	cursor: not-allowed;
+	transform: none;
+	filter: none;
+	box-shadow: 0 6px 14px rgba(15, 23, 42, 0.06);
+}
+
+/* Logo Python : réduit par 3 */
+.python-logo {
+	max-width: 33%;
+	margin: 0 auto; /* centre */
+	display: block;
+}
+
+/* Optionnel: encore plus propre sur mobile */
+@media (max-width: 576px) {
+	.python-logo {
+		max-width: 45%;
+	}
+}
+
+/* NEXT = même esprit que PREV (clair/soft), mais un peu plus "action" */
+.chapter-navigation .btn-next {
+  color: #0f172a; /* texte foncé comme prev */
+  background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%); /* blanc -> bleu très clair */
+  border: 1px solid rgba(14, 165, 233, 0.35); /* liseré bleu */
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+}
+
+/* Optionnel: petite différenciation (flèche à droite un peu plus marquée) */
+.chapter-navigation .btn-next:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+}
+
+.chapter-navigation .btn-next:active {
+  transform: translateY(0px) scale(0.99);
+}
+
+/* Sécu: éviter que des styles de liens changent la couleur */
+.chapter-navigation .btn-next:visited {
+  color: #0f172a;
+}

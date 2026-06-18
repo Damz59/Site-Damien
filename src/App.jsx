@@ -1,6 +1,6 @@
 // src/App.jsx
-
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import {
 	BrowserRouter,
 	Routes,
@@ -11,70 +11,95 @@ import {
 } from "react-router-dom";
 import { useEffect, useState, useCallback, useRef } from "react";
 
+/* =====================================================
+   Layout / Shell
+===================================================== */
 import Header from "./components/Header/Header.jsx";
-import useIdleAuthPing from "./hooks/useIdleAuthPing";
 import Body from "./components/Body/Body.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 
+/* =====================================================
+   Hooks
+===================================================== */
+import useIdleAuthPing from "./hooks/useIdleAuthPing";
+
+/* =====================================================
+   Core pages
+===================================================== */
 import Admin from "./pages/admin/Admin.jsx";
-import Admin_CVCompetences from "./pages/cvcompetences/Admin_CVCompetences.jsx";
-
-import CoursEtTutos from "./pages/coursEtTutos/CoursEtTutos.jsx";
-import AdminCoursEtTutos from "./pages/coursEtTutos/Admin_CoursEtTutos.jsx";
-
-import Sommaire_ReactJs from "./pages/coursEtTutos/Cours_et_Tutoriels/ReactJs/Sommaire_ReactJs.jsx";
-import Sommaire_Php from "./pages/coursEtTutos/Cours_et_Tutoriels/Php/Sommaire_Php.jsx";
-
-// Routeur dynamique chapitres ReactJS
-import Cours_ReactJs_Router from "./pages/coursEtTutos/Cours_et_Tutoriels/ReactJs/Cours_ReactJs_Router.jsx";
-
-// ✅ AJOUT : routeur dynamique chapitres PHP
-import Cours_Php_Router from "./pages/coursEtTutos/Cours_et_Tutoriels/Php/Cours_Php_Router.jsx";
-
-// ✅ AJOUT : page admin chapitres ReactJS
-import Admin_Sommaire_ReactJs from "./pages/coursEtTutos/Cours_et_Tutoriels/ReactJs/Admin_Sommaire_ReactJs.jsx";
-
-// ✅ AJOUT : page admin chapitres PHP
-import Admin_Sommaire_Php from "./pages/coursEtTutos/Cours_et_Tutoriels/Php/Admin_Sommaire_Php.jsx";
-
-// ✅ AJOUT : Sommaire + Router Dart/Flutter (tiret bas)
-import Sommaire_Dart_Flutter from "./pages/coursEtTutos/Cours_et_Tutoriels/Dart_Flutter/Sommaire_Dart_Flutter.jsx";
-import Cours_Dart_Flutter_Router from "./pages/coursEtTutos/Cours_et_Tutoriels/Dart_Flutter/Cours_Dart_Flutter_Router.jsx";
-
-// ✅ AJOUT : page admin chapitres Dart/Flutter
-import Admin_Sommaire_Dart_Flutter from "./pages/coursEtTutos/Cours_et_Tutoriels/Dart_Flutter/Admin_Sommaire_Dart_Flutter.jsx";
-
-// ✅ AJOUT : Sommaire + Router Exercice Java SDBM
-import Sommaire_Exercice_Java_SDBM from "./pages/coursEtTutos/Cours_et_Tutoriels/Exercice_Java_SDBM/Sommaire_Exercice_Java_SDBM.jsx";
-import Exercice_Java_SDBM_Router from "./pages/coursEtTutos/Cours_et_Tutoriels/Exercice_Java_SDBM/Exercice_Java_SDBM_Router.jsx";
-
-// ✅ AJOUT : page admin chapitres Exercice Java SDBM
-import Admin_Sommaire_Exercice_Java_SDBM from "./pages/coursEtTutos/Cours_et_Tutoriels/Exercice_Java_SDBM/Admin_Sommaire_Exercice_Java_SDBM.jsx";
-
-// ✅ AJOUT : Sommaire + Router Exercice Angular SDBM (slug BDD = angular-sdbm)
-import Sommaire_Exercice_Angular_SDBM from "./pages/coursEtTutos/Cours_et_Tutoriels/Exercice_Angular_SDBM/Sommaire_Exercice_Angular_SDBM.jsx";
-import Exercice_Angular_SDBM_Router from "./pages/coursEtTutos/Cours_et_Tutoriels/Exercice_Angular_SDBM/Exercice_Angular_SDBM_Router.jsx";
-
-// ✅ AJOUT : page admin chapitres Exercice Angular SDBM
-import Admin_Sommaire_Exercice_Angular_SDBM from "./pages/coursEtTutos/Cours_et_Tutoriels/Exercice_Angular_SDBM/Admin_Sommaire_Exercice_Angular_SDBM.jsx";
-
 import User from "./pages/user/User.jsx";
+
 import Projets from "./pages/projets/Projets.jsx";
 import CVCompetences from "./pages/cvcompetences/CVCompetences.jsx";
 import Contact from "./pages/contact/Contact.jsx";
 
 import Inscription from "./pages/inscription/Inscription.jsx";
 import Connexion from "./pages/connexion/Connexion.jsx";
-
-// ✅ AJOUT : Mot de passe oublié
 import MotDePasseOublie from "./pages/connexion/MotDePasseOublie.jsx";
-
-// ✅ AJOUT : Reset password
 import ResetPassword from "./pages/connexion/ResetPassword.jsx";
 
-import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
-import { API_BASE } from "./config/api";
+/* =====================================================
+   Admin pages (sections)
+===================================================== */
+import Admin_CVCompetences from "./pages/cvcompetences/Admin_CVCompetences.jsx";
+import AdminCoursEtTutos from "./pages/coursEtTutos/Admin_CoursEtTutos.jsx";
 
+/* =====================================================
+   Cours & Tutos - Hub page
+===================================================== */
+import CoursEtTutos from "./pages/coursEtTutos/CoursEtTutos.jsx";
+
+/* =====================================================
+   Cours & Tutos - ReactJS
+===================================================== */
+import Sommaire_ReactJs from "./pages/coursEtTutos/Cours_et_Tutoriels/ReactJs/Sommaire_ReactJs.jsx";
+import Cours_ReactJs_Router from "./pages/coursEtTutos/Cours_et_Tutoriels/ReactJs/Cours_ReactJs_Router.jsx";
+import Admin_Sommaire_ReactJs from "./pages/coursEtTutos/Cours_et_Tutoriels/ReactJs/Admin_Sommaire_ReactJs.jsx";
+
+/* =====================================================
+   Cours & Tutos - PHP
+===================================================== */
+import Sommaire_Php from "./pages/coursEtTutos/Cours_et_Tutoriels/Php/Sommaire_Php.jsx";
+import Cours_Php_Router from "./pages/coursEtTutos/Cours_et_Tutoriels/Php/Cours_Php_Router.jsx";
+import Admin_Sommaire_Php from "./pages/coursEtTutos/Cours_et_Tutoriels/Php/Admin_Sommaire_Php.jsx";
+
+/* =====================================================
+   Cours & Tutos - Dart / Flutter (tiret bas)
+===================================================== */
+import Sommaire_Dart_Flutter from "./pages/coursEtTutos/Cours_et_Tutoriels/Dart_Flutter/Sommaire_Dart_Flutter.jsx";
+import Cours_Dart_Flutter_Router from "./pages/coursEtTutos/Cours_et_Tutoriels/Dart_Flutter/Cours_Dart_Flutter_Router.jsx";
+import Admin_Sommaire_Dart_Flutter from "./pages/coursEtTutos/Cours_et_Tutoriels/Dart_Flutter/Admin_Sommaire_Dart_Flutter.jsx";
+
+/* =====================================================
+   Cours & Tutos - Exercice Java SDBM (tiret bas)
+===================================================== */
+import Sommaire_Exercice_Java_SDBM from "./pages/coursEtTutos/Cours_et_Tutoriels/Exercice_Java_SDBM/Sommaire_Exercice_Java_SDBM.jsx";
+import Exercice_Java_SDBM_Router from "./pages/coursEtTutos/Cours_et_Tutoriels/Exercice_Java_SDBM/Exercice_Java_SDBM_Router.jsx";
+import Admin_Sommaire_Exercice_Java_SDBM from "./pages/coursEtTutos/Cours_et_Tutoriels/Exercice_Java_SDBM/Admin_Sommaire_Exercice_Java_SDBM.jsx";
+
+/* =====================================================
+   Cours & Tutos - Exercice Angular SDBM (slug BDD = angular-sdbm)
+===================================================== */
+import Sommaire_Exercice_Angular_SDBM from "./pages/coursEtTutos/Cours_et_Tutoriels/Exercice_Angular_SDBM/Sommaire_Exercice_Angular_SDBM.jsx";
+import Exercice_Angular_SDBM_Router from "./pages/coursEtTutos/Cours_et_Tutoriels/Exercice_Angular_SDBM/Exercice_Angular_SDBM_Router.jsx";
+import Admin_Sommaire_Exercice_Angular_SDBM from "./pages/coursEtTutos/Cours_et_Tutoriels/Exercice_Angular_SDBM/Admin_Sommaire_Exercice_Angular_SDBM.jsx";
+
+/* =====================================================
+   Cours & Tutos - Python (slug BDD = base-python)
+===================================================== */
+import Sommaire_Python from "./pages/coursEtTutos/Cours_et_Tutoriels/Python/Sommaire_Python.jsx";
+import Cours_Python_Router from "./pages/coursEtTutos/Cours_et_Tutoriels/Python/Cours_Python_Router.jsx";
+import Admin_Sommaire_Python from "./pages/coursEtTutos/Cours_et_Tutoriels/Python/Admin_Sommaire_Python.jsx";
+
+/* =====================================================
+   Auth / Guards
+===================================================== */
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.jsx";
+
+/* =====================================================
+   Config / Styles
+===================================================== */
+import { API_BASE } from "./config/api";
 import "./App.css";
 
 function AppRoutes({
@@ -157,7 +182,6 @@ function AppRoutes({
 	useIdleAuthPing(refreshAuth, { idleMs: 90_000 });
 
 	const didInitAuth = useRef(false);
-
 	useEffect(() => {
 		if (didInitAuth.current) return;
 		didInitAuth.current = true;
@@ -173,8 +197,27 @@ function AppRoutes({
 			/>
 
 			<Routes>
+				{/* =========================
+            Public
+        ========================= */}
 				<Route path="/" element={<Body authUser={authUser} />} />
+				<Route path="/inscription" element={<Inscription />} />
+				<Route path="/mot-de-passe-oublie" element={<MotDePasseOublie />} />
+				<Route path="/reset-password" element={<ResetPassword />} />
+				<Route
+					path="/connexion"
+					element={
+						<Connexion
+							refreshAuth={refreshAuth}
+							authMessage={authMessage}
+							clearAuthMessage={clearAuthMessage}
+						/>
+					}
+				/>
 
+				{/* =========================
+            Admin
+        ========================= */}
 				<Route
 					path="/admin"
 					element={
@@ -183,7 +226,6 @@ function AppRoutes({
 						</ProtectedRoute>
 					}
 				/>
-
 				<Route
 					path="/admin/cv-competences"
 					element={
@@ -192,7 +234,6 @@ function AppRoutes({
 						</ProtectedRoute>
 					}
 				/>
-
 				<Route
 					path="/admin/coursEtTutos"
 					element={
@@ -202,7 +243,7 @@ function AppRoutes({
 					}
 				/>
 
-				{/* ✅ admin chapitres ReactJS */}
+				{/* --- Admin chapitres par cours --- */}
 				<Route
 					path="/admin/coursEtTutos/reactjs/chapitres"
 					element={
@@ -211,8 +252,6 @@ function AppRoutes({
 						</ProtectedRoute>
 					}
 				/>
-
-				{/* ✅ admin chapitres PHP */}
 				<Route
 					path="/admin/coursEtTutos/php/chapitres"
 					element={
@@ -221,8 +260,6 @@ function AppRoutes({
 						</ProtectedRoute>
 					}
 				/>
-
-				{/* ✅ admin chapitres Dart / Flutter */}
 				<Route
 					path="/admin/coursEtTutos/dart_flutter/chapitres"
 					element={
@@ -231,8 +268,6 @@ function AppRoutes({
 						</ProtectedRoute>
 					}
 				/>
-
-				{/* ✅ admin chapitres Exercice Java SDBM */}
 				<Route
 					path="/admin/coursEtTutos/java_sdbm/chapitres"
 					element={
@@ -241,8 +276,6 @@ function AppRoutes({
 						</ProtectedRoute>
 					}
 				/>
-
-				{/* ✅ admin chapitres Exercice Angular SDBM */}
 				<Route
 					path="/admin/coursEtTutos/angular-sdbm/chapitres"
 					element={
@@ -251,7 +284,18 @@ function AppRoutes({
 						</ProtectedRoute>
 					}
 				/>
+				<Route
+					path="/admin/coursEtTutos/base-python/chapitres"
+					element={
+						<ProtectedRoute requiredRole="admin" authUser={authUser} authChecked={authChecked}>
+							<Admin_Sommaire_Python authUser={authUser} />
+						</ProtectedRoute>
+					}
+				/>
 
+				{/* =========================
+            User / Protected
+        ========================= */}
 				<Route
 					path="/user"
 					element={
@@ -270,7 +314,9 @@ function AppRoutes({
 					}
 				/>
 
-				{/* ReactJS */}
+				{/* =========================
+            Cours & Tutos - ReactJS
+        ========================= */}
 				<Route
 					path="/coursEtTutos/reactjs/sommaire"
 					element={
@@ -279,7 +325,6 @@ function AppRoutes({
 						</ProtectedRoute>
 					}
 				/>
-
 				<Route
 					path="/coursEtTutos/reactjs/:chapterSlug"
 					element={
@@ -289,7 +334,9 @@ function AppRoutes({
 					}
 				/>
 
-				{/* PHP */}
+				{/* =========================
+            Cours & Tutos - PHP
+        ========================= */}
 				<Route
 					path="/coursEtTutos/php/sommaire"
 					element={
@@ -298,7 +345,6 @@ function AppRoutes({
 						</ProtectedRoute>
 					}
 				/>
-
 				<Route
 					path="/coursEtTutos/php/:chapterSlug"
 					element={
@@ -308,7 +354,9 @@ function AppRoutes({
 					}
 				/>
 
-				{/* ✅ Dart / Flutter (tiret bas) */}
+				{/* =========================
+            Cours & Tutos - Dart / Flutter
+        ========================= */}
 				<Route
 					path="/coursEtTutos/dart_flutter/sommaire"
 					element={
@@ -317,13 +365,10 @@ function AppRoutes({
 						</ProtectedRoute>
 					}
 				/>
-
-				{/* ✅ redirection /coursEtTutos/dart_flutter -> /sommaire */}
 				<Route
 					path="/coursEtTutos/dart_flutter"
 					element={<Navigate to="/coursEtTutos/dart_flutter/sommaire" replace />}
 				/>
-
 				<Route
 					path="/coursEtTutos/dart_flutter/:chapterSlug"
 					element={
@@ -333,7 +378,9 @@ function AppRoutes({
 					}
 				/>
 
-				{/* ✅ Exercice Java SDBM */}
+				{/* =========================
+            Cours & Tutos - Exercice Java SDBM
+        ========================= */}
 				<Route
 					path="/coursEtTutos/java_sdbm/sommaire"
 					element={
@@ -342,13 +389,10 @@ function AppRoutes({
 						</ProtectedRoute>
 					}
 				/>
-
-				{/* ✅ redirection /coursEtTutos/java_sdbm -> /sommaire */}
 				<Route
 					path="/coursEtTutos/java_sdbm"
 					element={<Navigate to="/coursEtTutos/java_sdbm/sommaire" replace />}
 				/>
-
 				<Route
 					path="/coursEtTutos/java_sdbm/:chapterSlug"
 					element={
@@ -358,7 +402,9 @@ function AppRoutes({
 					}
 				/>
 
-				{/* ✅ Exercice Angular SDBM (slug BDD = angular-sdbm) */}
+				{/* =========================
+            Cours & Tutos - Exercice Angular SDBM
+        ========================= */}
 				<Route
 					path="/coursEtTutos/angular-sdbm/sommaire"
 					element={
@@ -367,13 +413,10 @@ function AppRoutes({
 						</ProtectedRoute>
 					}
 				/>
-
-				{/* ✅ redirection /coursEtTutos/angular-sdbm -> /sommaire */}
 				<Route
 					path="/coursEtTutos/angular-sdbm"
 					element={<Navigate to="/coursEtTutos/angular-sdbm/sommaire" replace />}
 				/>
-
 				<Route
 					path="/coursEtTutos/angular-sdbm/:chapterSlug"
 					element={
@@ -383,28 +426,41 @@ function AppRoutes({
 					}
 				/>
 
-				<Route path="/inscription" element={<Inscription />} />
-
-				{/* ✅ Mot de passe oublié */}
-				<Route path="/mot-de-passe-oublie" element={<MotDePasseOublie />} />
-
-				{/* ✅ Reset password */}
-				<Route path="/reset-password" element={<ResetPassword />} />
-
+				{/* =========================
+            Cours & Tutos - Python (slug BDD = base-python)
+        ========================= */}
 				<Route
-					path="/connexion"
+					path="/coursEtTutos/base-python/sommaire"
 					element={
-						<Connexion
-							refreshAuth={refreshAuth}
-							authMessage={authMessage}
-							clearAuthMessage={clearAuthMessage}
-						/>
+						<ProtectedRoute requiredRole="user" authUser={authUser} authChecked={authChecked}>
+							<Sommaire_Python authUser={authUser} />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/coursEtTutos/base-python"
+					element={<Navigate to="/coursEtTutos/base-python/sommaire" replace />}
+				/>
+				<Route
+					path="/coursEtTutos/base-python/:chapterSlug"
+					element={
+						<ProtectedRoute requiredRole="user" authUser={authUser} authChecked={authChecked}>
+							<Cours_Python_Router authUser={authUser} />
+						</ProtectedRoute>
 					}
 				/>
 
+				{/* =========================
+            Autres pages protégées
+        ========================= */}
 				<Route path="/projets" element={<Projets authUser={authUser} />} />
 				<Route path="/cv-competences" element={<CVCompetences authUser={authUser} />} />
 				<Route path="/contact" element={<Contact authUser={authUser} />} />
+
+				{/* =========================
+            Fallback
+        ========================= */}
+				<Route path="*" element={<Navigate to="/" replace />} />
 			</Routes>
 
 			<Footer />

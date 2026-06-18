@@ -1,56 +1,181 @@
-/* Admin_Sommaire_Exercice_Angular_SDBM.css */
+/* Admin_Sommaire_Exercice_Angular_SDBM.css
+   Style complet = style "chapitre" + tes classes admin existantes
+*/
 
-.admin-sommaire-exercice-angular-sdbm {
-  --asr-gap: 0.75rem;
+/* =====================================================
+   Anti-superposition (header fixe/sticky)
+===================================================== */
+:root {
+	--app-header-height: 80px; /* ajuste si besoin */
+	--asr-gap: 0.75rem;
 }
 
-.admin-sommaire-exercice-angular-sdbm__titlebar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--asr-gap);
-  margin-bottom: 0.75rem;
+/* =====================================================
+   Base layout
+===================================================== */
+.page-content {
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	padding: calc(24px + var(--app-header-height)) 16px 48px;
 }
 
-.admin-sommaire-exercice-angular-sdbm__cardHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--asr-gap);
+/* =====================================================
+   Bandeau "chapitre" (header)
+===================================================== */
+.course-header {
+	margin: 18px 0 18px;
+	padding: 14px 16px;
+	border-radius: 14px;
+	background: linear-gradient(135deg, #0ea5e9 0%, #22c55e 100%);
+	color: #fff;
+	box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2);
 }
 
-.admin-sommaire-exercice-angular-sdbm__tableWrap {
-  width: 100%;
-  overflow-x: auto;
+.course-title {
+	margin: 0;
+	font-size: 1.6rem;
+	font-weight: 800;
+	letter-spacing: 0.2px;
 }
 
-.admin-sommaire-exercice-angular-sdbm__colOrder {
-  width: 90px;
-  white-space: nowrap;
+.course-subtitle {
+	margin: 8px 0 0;
+	font-size: 1rem;
+	opacity: 0.95;
+	line-height: 1.4;
 }
 
-.admin-sommaire-exercice-angular-sdbm__colActive {
-  width: 80px;
-  white-space: nowrap;
+@media (max-width: 576px) {
+	.course-title {
+		font-size: 1.25rem;
+	}
 }
 
-.admin-sommaire-exercice-angular-sdbm__colActions {
-  width: 260px;
-  white-space: nowrap;
+.course-badge {
+	border-radius: 999px;
+	font-weight: 800;
+	letter-spacing: 0.2px;
+	padding: 0.45em 0.65em;
 }
 
-.admin-sommaire-exercice-angular-sdbm__orderBtns {
-  display: flex;
-  gap: 0.35rem;
+/* =====================================================
+   Cards (style chapitre)
+===================================================== */
+.course-card {
+	border-radius: 16px;
+	background: #ffffff;
+	border: 1px solid rgba(15, 23, 42, 0.08);
+	box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
 }
 
-.admin-sommaire-exercice-angular-sdbm__actions {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: flex-end;
-  flex-wrap: wrap;
+.course-card .card-body {
+	padding: 18px;
+}
+
+/* on laisse ton header admin gérer l’alignement (bouton à droite) */
+.course-card .card-header {
+	border-top-left-radius: 16px;
+	border-top-right-radius: 16px;
+	background: #ffffff;
+	border-bottom: 1px dashed rgba(15, 23, 42, 0.18);
+}
+
+/* =====================================================
+   Alerts (un peu plus "chapitre")
+===================================================== */
+.alert {
+	border-radius: 14px;
+}
+
+/* =====================================================
+   Table (look plus clean)
+===================================================== */
+.table thead th {
+	font-weight: 800;
+	color: #0f172a;
+}
+
+.table td {
+	vertical-align: middle;
 }
 
 .admin-sommaire-exercice-angular-sdbm__code {
-  font-size: 0.9em;
+	font-size: 0.9em;
+	padding: 2px 6px;
+	border-radius: 8px;
+	background: rgba(15, 23, 42, 0.06);
+	border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+/* =====================================================
+   Boutons (chips)
+===================================================== */
+.btn {
+	border-radius: 12px;
+	font-weight: 700;
+}
+
+/* =====================================================
+   === Tes classes admin existantes (conservées / complétées) ===
+===================================================== */
+.admin-sommaire-exercice-angular-sdbm {
+	/* déjà défini dans :root, mais tu peux le surcharger ici si besoin */
+	--asr-gap: 0.75rem;
+}
+
+.admin-sommaire-exercice-angular-sdbm__titlebar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--asr-gap);
+	margin-bottom: 0.75rem;
+}
+
+/* header de card : titre + bouton */
+.admin-sommaire-exercice-angular-sdbm__cardHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--asr-gap);
+}
+
+.admin-sommaire-exercice-angular-sdbm__tableWrap {
+	width: 100%;
+	overflow-x: auto;
+}
+
+.admin-sommaire-exercice-angular-sdbm__colOrder {
+	width: 90px;
+	white-space: nowrap;
+}
+
+.admin-sommaire-exercice-angular-sdbm__colActive {
+	width: 80px;
+	white-space: nowrap;
+}
+
+.admin-sommaire-exercice-angular-sdbm__colActions {
+	width: 260px;
+	white-space: nowrap;
+}
+
+.admin-sommaire-exercice-angular-sdbm__orderBtns {
+	display: flex;
+	gap: 0.35rem;
+}
+
+.admin-sommaire-exercice-angular-sdbm__actions {
+	display: flex;
+	gap: 0.5rem;
+	justify-content: flex-end;
+	flex-wrap: wrap;
+}
+
+/* Optionnel : réduire un peu les boutons d’ordre sur mobile */
+@media (max-width: 576px) {
+	.admin-sommaire-exercice-angular-sdbm__colActions {
+		width: auto;
+		white-space: normal;
+	}
 }

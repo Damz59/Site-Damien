@@ -1,5 +1,4 @@
-// Admin_CoursEtTutos.jsx
-
+// src/pages/coursEtTutos/Admin_CoursEtTutos.jsx
 import { useEffect, useMemo, useState } from "react";
 import {
 	Container,
@@ -55,13 +54,11 @@ export default function AdminCoursEtTutos({ authUser }) {
 	const loadCategories = async () => {
 		setLoading(true);
 		setError(null);
-
 		try {
 			const res = await fetch(`${API_BASE}/coursEtTutos-categories-admin.php`, {
 				credentials: "include",
 			});
 			const data = await res.json();
-
 			if (!res.ok || !data.success) {
 				throw new Error(data.error || "Erreur chargement catégories");
 			}
@@ -72,7 +69,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 			// Assure une sélection valide pour le formulaire d’ajout
 			if (nextCats.length > 0) {
 				const stillExists = nextCats.some(
-					(c) => String(c.id) === String(selectedCategoryId)
+					(c) => String(c.id) === String(selectedCategoryId),
 				);
 				if (!selectedCategoryId || !stillExists) {
 					setSelectedCategoryId(String(nextCats[0].id));
@@ -90,17 +87,14 @@ export default function AdminCoursEtTutos({ authUser }) {
 	const loadItems = async () => {
 		setItemsLoading(true);
 		setItemsError(null);
-
 		try {
 			const res = await fetch(`${API_BASE}/coursEtTutos-items-admin.php`, {
 				credentials: "include",
 			});
 			const data = await res.json();
-
 			if (!res.ok || !data.success) {
 				throw new Error(data.error || "Erreur chargement items");
 			}
-
 			setItems(data.items || []);
 		} catch (e) {
 			setItemsError(e?.message || "Erreur chargement items");
@@ -137,18 +131,15 @@ export default function AdminCoursEtTutos({ authUser }) {
 		for (const c of categories) {
 			map.set(String(c.id), []);
 		}
-
 		for (const it of items) {
 			const key = String(it.category_id);
 			if (!map.has(key)) map.set(key, []);
 			map.get(key).push(it);
 		}
-
 		// sort items inside each category by position
 		for (const [, arr] of map.entries()) {
 			arr.sort((a, b) => Number(a.position) - Number(b.position));
 		}
-
 		return map;
 	}, [categories, items]);
 
@@ -158,7 +149,6 @@ export default function AdminCoursEtTutos({ authUser }) {
 	const createCategory = async () => {
 		const name = newName.trim();
 		if (!name) return;
-
 		try {
 			const res = await fetch(`${API_BASE}/coursEtTutos-categories-admin.php`, {
 				method: "POST",
@@ -167,9 +157,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ name }),
 			});
 			const data = await res.json();
-
 			if (!res.ok || !data.success) throw new Error(data.error || "Erreur création");
-
 			setNewName("");
 			await loadCategories();
 		} catch (e) {
@@ -180,7 +168,6 @@ export default function AdminCoursEtTutos({ authUser }) {
 	const renameCategory = async (id, currentName) => {
 		const next = window.prompt("Nouveau nom :", currentName);
 		if (!next || !next.trim()) return;
-
 		try {
 			const res = await fetch(`${API_BASE}/coursEtTutos-categories-admin.php`, {
 				method: "PUT",
@@ -189,9 +176,8 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id, name: next.trim() }),
 			});
 			const data = await res.json();
-
-			if (!res.ok || !data.success) throw new Error(data.error || "Erreur modification");
-
+			if (!res.ok || !data.success)
+				throw new Error(data.error || "Erreur modification");
 			await loadCategories();
 		} catch (e) {
 			setError(e?.message || "Erreur modification");
@@ -200,7 +186,6 @@ export default function AdminCoursEtTutos({ authUser }) {
 
 	const deleteCategory = async (id, name) => {
 		if (!window.confirm(`Supprimer la catégorie "${name}" ?`)) return;
-
 		try {
 			const res = await fetch(`${API_BASE}/coursEtTutos-categories-admin.php`, {
 				method: "DELETE",
@@ -209,9 +194,8 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id }),
 			});
 			const data = await res.json();
-
-			if (!res.ok || !data.success) throw new Error(data.error || "Erreur suppression");
-
+			if (!res.ok || !data.success)
+				throw new Error(data.error || "Erreur suppression");
 			await loadAll();
 		} catch (e) {
 			setError(e?.message || "Erreur suppression");
@@ -227,9 +211,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id, active: nextActive }),
 			});
 			const data = await res.json();
-
 			if (!res.ok || !data.success) throw new Error(data.error || "Erreur update");
-
 			await loadCategories();
 		} catch (e) {
 			setError(e?.message || "Erreur update");
@@ -245,9 +227,8 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ action: "move", id, direction }),
 			});
 			const data = await res.json();
-
-			if (!res.ok || !data.success) throw new Error(data.error || "Erreur déplacement");
-
+			if (!res.ok || !data.success)
+				throw new Error(data.error || "Erreur déplacement");
 			await loadCategories();
 		} catch (e) {
 			setError(e?.message || "Erreur déplacement");
@@ -263,7 +244,6 @@ export default function AdminCoursEtTutos({ authUser }) {
 		const slug = slugify(newItemSlug.trim());
 		const short_desc = newItemShortDesc.trim();
 		const image_url = newItemImageUrl.trim();
-
 		if (!category_id || !title || !slug) return;
 
 		try {
@@ -274,13 +254,14 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ category_id, title, slug, short_desc, image_url }),
 			});
 			const data = await res.json();
-
-			if (!res.ok || !data.success) throw new Error(data.error || "Erreur création item");
+			if (!res.ok || !data.success)
+				throw new Error(data.error || "Erreur création item");
 
 			setNewItemTitle("");
 			setNewItemSlug("");
 			setNewItemShortDesc("");
 			setNewItemImageUrl("");
+
 			await loadItems();
 		} catch (e) {
 			setItemsError(e?.message || "Erreur création item");
@@ -290,7 +271,6 @@ export default function AdminCoursEtTutos({ authUser }) {
 	const renameItem = async (id, currentTitle) => {
 		const next = window.prompt("Nouveau titre :", currentTitle);
 		if (!next || !next.trim()) return;
-
 		try {
 			const res = await fetch(`${API_BASE}/coursEtTutos-items-admin.php`, {
 				method: "PUT",
@@ -299,9 +279,8 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id, title: next.trim() }),
 			});
 			const data = await res.json();
-
-			if (!res.ok || !data.success) throw new Error(data.error || "Erreur modification");
-
+			if (!res.ok || !data.success)
+				throw new Error(data.error || "Erreur modification");
 			await loadItems();
 		} catch (e) {
 			setItemsError(e?.message || "Erreur modification");
@@ -311,7 +290,6 @@ export default function AdminCoursEtTutos({ authUser }) {
 	const editItemSlug = async (id, currentSlug) => {
 		const next = window.prompt("Nouveau slug :", currentSlug);
 		if (!next || !next.trim()) return;
-
 		try {
 			const res = await fetch(`${API_BASE}/coursEtTutos-items-admin.php`, {
 				method: "PUT",
@@ -320,9 +298,8 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id, slug: slugify(next.trim()) }),
 			});
 			const data = await res.json();
-
-			if (!res.ok || !data.success) throw new Error(data.error || "Erreur modification slug");
-
+			if (!res.ok || !data.success)
+				throw new Error(data.error || "Erreur modification slug");
 			await loadItems();
 		} catch (e) {
 			setItemsError(e?.message || "Erreur modification slug");
@@ -332,7 +309,6 @@ export default function AdminCoursEtTutos({ authUser }) {
 	const editItemDesc = async (id, currentDesc) => {
 		const next = window.prompt("Nouvelle description courte :", currentDesc || "");
 		if (next === null) return;
-
 		try {
 			const res = await fetch(`${API_BASE}/coursEtTutos-items-admin.php`, {
 				method: "PUT",
@@ -341,9 +317,8 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id, short_desc: next }),
 			});
 			const data = await res.json();
-
-			if (!res.ok || !data.success) throw new Error(data.error || "Erreur modification description");
-
+			if (!res.ok || !data.success)
+				throw new Error(data.error || "Erreur modification description");
 			await loadItems();
 		} catch (e) {
 			setItemsError(e?.message || "Erreur modification description");
@@ -351,9 +326,11 @@ export default function AdminCoursEtTutos({ authUser }) {
 	};
 
 	const editItemLogo = async (id, currentUrl) => {
-		const next = window.prompt("URL/chemin du logo (image_url) :", currentUrl || "");
+		const next = window.prompt(
+			"URL/chemin du logo (image_url) :",
+			currentUrl || "",
+		);
 		if (next === null) return;
-
 		try {
 			const res = await fetch(`${API_BASE}/coursEtTutos-items-admin.php`, {
 				method: "PUT",
@@ -362,9 +339,8 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id, image_url: next.trim() }),
 			});
 			const data = await res.json();
-
-			if (!res.ok || !data.success) throw new Error(data.error || "Erreur modification logo");
-
+			if (!res.ok || !data.success)
+				throw new Error(data.error || "Erreur modification logo");
 			await loadItems();
 		} catch (e) {
 			setItemsError(e?.message || "Erreur modification logo");
@@ -380,9 +356,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id, active: nextActive }),
 			});
 			const data = await res.json();
-
 			if (!res.ok || !data.success) throw new Error(data.error || "Erreur update item");
-
 			await loadItems();
 		} catch (e) {
 			setItemsError(e?.message || "Erreur update item");
@@ -398,9 +372,8 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ action: "move", id, direction }),
 			});
 			const data = await res.json();
-
-			if (!res.ok || !data.success) throw new Error(data.error || "Erreur déplacement item");
-
+			if (!res.ok || !data.success)
+				throw new Error(data.error || "Erreur déplacement item");
 			await loadItems();
 		} catch (e) {
 			setItemsError(e?.message || "Erreur déplacement item");
@@ -409,7 +382,6 @@ export default function AdminCoursEtTutos({ authUser }) {
 
 	const deleteItem = async (id, title) => {
 		if (!window.confirm(`Supprimer le cours "${title}" ?`)) return;
-
 		try {
 			const res = await fetch(`${API_BASE}/coursEtTutos-items-admin.php`, {
 				method: "DELETE",
@@ -418,9 +390,8 @@ export default function AdminCoursEtTutos({ authUser }) {
 				body: JSON.stringify({ id }),
 			});
 			const data = await res.json();
-
-			if (!res.ok || !data.success) throw new Error(data.error || "Erreur suppression item");
-
+			if (!res.ok || !data.success)
+				throw new Error(data.error || "Erreur suppression item");
 			await loadItems();
 		} catch (e) {
 			setItemsError(e?.message || "Erreur suppression item");
@@ -432,7 +403,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 	// -----------------------------
 	if (!authUser) {
 		return (
-			<main className="flex-grow-1 overflow-auto">
+			<main className="flex-grow-1 overflow-auto page-content">
 				<Banniere />
 				<Container className="my-5">
 					<Alert variant="warning" className="mb-0">
@@ -444,19 +415,32 @@ export default function AdminCoursEtTutos({ authUser }) {
 	}
 
 	return (
-		<main className="flex-grow-1 overflow-auto">
+		<main className="flex-grow-1 overflow-auto page-content">
 			<Banniere />
 			<div className="mt-3">
 				<BanniereIsConnected authUser={authUser} />
 			</div>
 
-			<Container className="my-5">
-				<h1 className="mb-4">Administration Cours &amp; Tutoriels</h1>
+			<Container className="my-4">
+				{/* ✅ Header chapitre-style */}
+				<header className="chapter-header">
+					<div className="d-flex align-items-center justify-content-between flex-wrap gap-2">
+						<div>
+							<h1 className="chapter-title">Administration Cours &amp; Tutoriels</h1>
+							<p className="chapter-subtitle mb-0">
+								Gère les catégories, les cours/exercices et l’accès aux chapitres.
+							</p>
+						</div>
+						<Badge bg="light" text="dark">
+							Admin
+						</Badge>
+					</div>
+				</header>
 
 				{error && <Alert variant="danger">{error}</Alert>}
 
 				{/* ------------------- */}
-				{/* CATEGORIES */}
+				/* CATEGORIES */
 				{/* ------------------- */}
 				<Card className="shadow-sm mb-4">
 					<Card.Header className="bg-primary text-white d-flex align-items-center justify-content-between">
@@ -526,13 +510,17 @@ export default function AdminCoursEtTutos({ authUser }) {
 											>
 												↓
 											</Button>
+
 											<Button
 												size="sm"
 												variant={Number(c.active) ? "outline-warning" : "outline-success"}
-												onClick={() => toggleActiveCategory(c.id, Number(c.active) ? 0 : 1)}
+												onClick={() =>
+													toggleActiveCategory(c.id, Number(c.active) ? 0 : 1)
+												}
 											>
 												{Number(c.active) ? "Désactiver" : "Activer"}
 											</Button>
+
 											<Button
 												size="sm"
 												variant="outline-primary"
@@ -540,6 +528,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 											>
 												Renommer
 											</Button>
+
 											<Button
 												size="sm"
 												variant="outline-danger"
@@ -556,7 +545,7 @@ export default function AdminCoursEtTutos({ authUser }) {
 				</Card>
 
 				{/* ------------------- */}
-				{/* ITEMS / CARDS */}
+				/* ITEMS / CARDS */
 				{/* ------------------- */}
 				<Card className="shadow-sm">
 					<Card.Header className="bg-primary text-white d-flex align-items-center justify-content-between">
@@ -631,7 +620,11 @@ export default function AdminCoursEtTutos({ authUser }) {
 										<Button
 											variant="success"
 											onClick={createItem}
-											disabled={!selectedCategoryId || !newItemTitle.trim() || !newItemSlug.trim()}
+											disabled={
+												!selectedCategoryId ||
+												!newItemTitle.trim() ||
+												!newItemSlug.trim()
+											}
 										>
 											Ajouter le cours
 										</Button>
@@ -690,17 +683,21 @@ export default function AdminCoursEtTutos({ authUser }) {
 																					<span className="text-muted small">
 																						(slug: {it.slug} | pos: {it.position})
 																					</span>
-
 																					{Number(it.active) === 0 && (
-																						<span className="text-muted"> — inactif</span>
+																						<span className="text-muted">
+																							{" "}
+																							— inactif
+																						</span>
 																					)}
-
 																					{it.short_desc ? (
-																						<div className="text-muted small">{it.short_desc}</div>
+																						<div className="text-muted small">
+																							{it.short_desc}
+																						</div>
 																					) : null}
-
 																					{it.image_url ? (
-																						<div className="text-muted small">logo: {it.image_url}</div>
+																						<div className="text-muted small">
+																							logo: {it.image_url}
+																						</div>
 																					) : null}
 																				</div>
 																			</div>
@@ -715,7 +712,6 @@ export default function AdminCoursEtTutos({ authUser }) {
 																				>
 																					↑
 																				</Button>
-
 																				<Button
 																					size="sm"
 																					variant="outline-secondary"
@@ -729,62 +725,114 @@ export default function AdminCoursEtTutos({ authUser }) {
 																				<Button
 																					size="sm"
 																					variant={
-																						Number(it.active) ? "outline-warning" : "outline-success"
+																						Number(it.active)
+																							? "outline-warning"
+																							: "outline-success"
 																					}
-																					onClick={() => toggleActiveItem(it.id, Number(it.active) ? 0 : 1)}
+																					onClick={() =>
+																						toggleActiveItem(
+																							it.id,
+																							Number(it.active) ? 0 : 1,
+																						)
+																					}
 																				>
 																					{Number(it.active) ? "Désactiver" : "Activer"}
 																				</Button>
 
-																				<Button size="sm" variant="outline-primary" onClick={() => renameItem(it.id, it.title)}>
+																				<Button
+																					size="sm"
+																					variant="outline-primary"
+																					onClick={() => renameItem(it.id, it.title)}
+																				>
 																					Renommer
 																				</Button>
 
-																				<Button size="sm" variant="outline-primary" onClick={() => editItemSlug(it.id, it.slug)}>
+																				<Button
+																					size="sm"
+																					variant="outline-primary"
+																					onClick={() => editItemSlug(it.id, it.slug)}
+																				>
 																					Slug
 																				</Button>
 
-																				<Button size="sm" variant="outline-primary" onClick={() => editItemDesc(it.id, it.short_desc)}>
+																				<Button
+																					size="sm"
+																					variant="outline-primary"
+																					onClick={() => editItemDesc(it.id, it.short_desc)}
+																				>
 																					Description
 																				</Button>
 
-																				<Button size="sm" variant="outline-primary" onClick={() => editItemLogo(it.id, it.image_url)}>
+																				<Button
+																					size="sm"
+																					variant="outline-primary"
+																					onClick={() => editItemLogo(it.id, it.image_url)}
+																				>
 																					Logo
 																				</Button>
 
-																				{/* Boutons chapitres admin */}
+																				{/* Boutons chapitres admin (comme tes autres cours/exercices) */}
 																				{it.slug === "reactjs" && (
-																					<Link to="/admin/coursEtTutos/reactjs/chapitres" className="btn btn-outline-dark btn-sm">
+																					<Link
+																						to="/admin/coursEtTutos/reactjs/chapitres"
+																						className="btn btn-outline-dark btn-sm"
+																					>
 																						Chapitres
 																					</Link>
 																				)}
 
 																				{it.slug === "php" && (
-																					<Link to="/admin/coursEtTutos/php/chapitres" className="btn btn-outline-dark btn-sm">
+																					<Link
+																						to="/admin/coursEtTutos/php/chapitres"
+																						className="btn btn-outline-dark btn-sm"
+																					>
 																						Chapitres
 																					</Link>
 																				)}
 
 																				{it.slug === "dart_flutter" && (
-																					<Link to="/admin/coursEtTutos/dart_flutter/chapitres" className="btn btn-outline-dark btn-sm">
+																					<Link
+																						to="/admin/coursEtTutos/dart_flutter/chapitres"
+																						className="btn btn-outline-dark btn-sm"
+																					>
 																						Chapitres
 																					</Link>
 																				)}
 
 																				{it.slug === "java_sdbm" && (
-																					<Link to="/admin/coursEtTutos/java_sdbm/chapitres" className="btn btn-outline-dark btn-sm">
+																					<Link
+																						to="/admin/coursEtTutos/java_sdbm/chapitres"
+																						className="btn btn-outline-dark btn-sm"
+																					>
 																						Chapitres
 																					</Link>
 																				)}
 
-																				{/* ✅ AJOUT : Angular (slug BDD = angular-sdbm) */}
+																				{/* Angular (slug BDD = angular-sdbm) */}
 																				{it.slug === "angular-sdbm" && (
-																					<Link to="/admin/coursEtTutos/angular-sdbm/chapitres" className="btn btn-outline-dark btn-sm">
+																					<Link
+																						to="/admin/coursEtTutos/angular-sdbm/chapitres"
+																						className="btn btn-outline-dark btn-sm"
+																					>
 																						Chapitres
 																					</Link>
 																				)}
 
-																				<Button size="sm" variant="outline-danger" onClick={() => deleteItem(it.id, it.title)}>
+																				{/* ✅ Python (slug BDD = base-python) */}
+																				{it.slug === "base-python" && (
+																					<Link
+																						to="/admin/coursEtTutos/base-python/chapitres"
+																						className="btn btn-outline-dark btn-sm"
+																					>
+																						Chapitres
+																					</Link>
+																				)}
+
+																				<Button
+																					size="sm"
+																					variant="outline-danger"
+																					onClick={() => deleteItem(it.id, it.title)}
+																				>
 																					Supprimer
 																				</Button>
 																			</div>

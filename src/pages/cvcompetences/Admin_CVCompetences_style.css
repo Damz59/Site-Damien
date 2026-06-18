@@ -1,5 +1,4 @@
-/* Admin_style.css */
-
+/* Admin_CVCompetences_style.css */
 /* =====================================================
    Anti-superposition (header fixe/sticky)
 ===================================================== */
@@ -18,10 +17,10 @@
 }
 
 /* =====================================================
-   Titre page (bannière dégradée)
+   Titre page (style chapter header)
 ===================================================== */
-.admin-title {
-	margin: 18px 0 10px;
+.admin-cv-title {
+	margin: 18px 0 18px;
 	padding: 14px 16px;
 	border-radius: 14px;
 	background: linear-gradient(135deg, #0ea5e9 0%, #22c55e 100%);
@@ -35,87 +34,78 @@
 }
 
 @media (max-width: 576px) {
-	.admin-title {
+	.admin-cv-title {
 		font-size: 1.25rem;
 	}
 }
 
-/* Sous-texte connecté */
-.admin-subtitle {
-	margin-top: 10px;
-	color: rgba(15, 23, 42, 0.75);
+/* =====================================================
+   Barre actions (boutons recharger)
+===================================================== */
+.admin-cv-actions-bar {
+	margin: 6px 0 10px;
 }
 
 /* =====================================================
-   Boutons de navigation admin
+   Preview public (container)
 ===================================================== */
-.admin-nav {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 10px;
-	margin-top: 10px;
-}
-
-.admin-nav .btn {
-	border-radius: 14px;
-	font-weight: 800;
-	letter-spacing: 0.2px;
-}
-
-/* =====================================================
-   Cards / blocs
-===================================================== */
-.admin-block-card,
-.admin-message-card {
+.admin-cv-preview-card {
 	border-radius: 16px;
 	background: #ffffff;
 	border: 1px solid rgba(15, 23, 42, 0.08);
 	box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
 }
 
-.admin-message-card .card-body {
-	padding: 18px;
+.admin-cv-preview-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
 }
 
-/* =====================================================
-   Badges
-===================================================== */
-.admin-badge {
-	border-radius: 999px;
-	font-weight: 800;
-	letter-spacing: 0.2px;
-	padding: 0.45em 0.65em;
-}
-
-/* =====================================================
-   Tableau users
-===================================================== */
-.admin-table th {
-	color: #0f172a;
-	font-weight: 800;
-}
-
-.admin-table td {
-	vertical-align: middle;
-}
-
-/* Ta règle actuelle (conservée) */
-.admin-col-role {
-	width: 160px;
-}
-
-/* =====================================================
-   Alerts
-===================================================== */
-.admin-alert {
-	border-radius: 14px;
-}
-
-/* =====================================================
-   HR "chapitre"
-===================================================== */
-.admin-hr {
+.admin-cv-preview-divider {
 	margin: 14px 0;
 	border-top: 1px dashed rgba(15, 23, 42, 0.18);
 	opacity: 1;
+}
+
+/* =====================================================
+   Cards sections dans l'aperçu
+===================================================== */
+.admin-cv-section-card {
+	border-radius: 16px;
+	background: #ffffff;
+	border: 1px solid rgba(15, 23, 42, 0.08);
+	box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+.admin-cv-section-title {
+	margin: 0;
+	font-size: 1.05rem;
+	font-weight: 800;
+	color: #0f172a;
+
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.admin-cv-section-title::before {
+	content: "";
+	width: 10px;
+	height: 10px;
+	border-radius: 3px;
+	background: #f97316; /* orange-500 */
+	box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
+}
+
+/* Listes propres */
+.admin-cv-list {
+	margin: 0;
+	padding-left: 1.2rem;
+}
+
+.admin-cv-list li {
+	margin: 6px 0;
+	line-height: 1.45;
 }

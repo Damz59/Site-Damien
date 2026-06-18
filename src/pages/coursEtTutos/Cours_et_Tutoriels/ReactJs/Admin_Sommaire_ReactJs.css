@@ -1,57 +1,242 @@
-/* Admin_Sommaire_Dart_Flutter.css */
-/* Basé sur Admin_Sommaire_ReactJs.css, avec préfixe "admin-sommaire-dartflutter" */
+/* Admin_Sommaire_ReactJs.css
+   Style inspiré des chapitres (header banner + card + navigation),
+   adapté aux classes utilisées dans Admin_Sommaire_ReactJs.jsx
+*/
 
-.admin-sommaire-dartflutter {
-	--asdf-gap: 0.75rem;
+/* =====================================================
+   Anti-superposition (header fixe/sticky)
+===================================================== */
+:root {
+	--app-header-height: 80px; /* ajuste si besoin */
+	--asr-gap: 0.75rem;
 }
 
-.admin-sommaire-dartflutter__titlebar {
+/* =====================================================
+   Base layout
+===================================================== */
+.page-content {
+	width: 100%;
+	max-width: none;
+	margin: 0;
+	padding: calc(24px + var(--app-header-height)) 16px 48px;
+}
+
+/* =====================================================
+   Admin Sommaire ReactJS (scope)
+===================================================== */
+.admin-sommaire-reactjs {
+	--asr-accent-1: #0ea5e9;
+	--asr-accent-2: #2563eb;
+	--asr-accent-3: #22c55e;
+	--asr-text: #0f172a;
+}
+
+/* =====================================================
+   Chapter header (banner)
+===================================================== */
+.admin-sommaire-reactjs .chapter-header {
+	margin: 18px 0 18px;
+	padding: 14px 16px;
+	border-radius: 14px;
+	background: linear-gradient(
+		135deg,
+		var(--asr-accent-1) 0%,
+		var(--asr-accent-3) 100%
+	);
+	color: #fff;
+	box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2);
+}
+
+.admin-sommaire-reactjs .chapter-title {
+	margin: 0;
+	font-size: 1.8rem;
+	font-weight: 800;
+	letter-spacing: 0.2px;
+}
+
+.admin-sommaire-reactjs .chapter-subtitle {
+	margin: 8px 0 0;
+	font-size: 1rem;
+	opacity: 0.95;
+	line-height: 1.4;
+}
+
+/* =====================================================
+   Main card container
+===================================================== */
+.admin-sommaire-reactjs .chapter-card {
+	margin-top: 14px;
+	padding: 18px;
+	border-radius: 16px;
+	background: #ffffff;
+	border: 1px solid rgba(15, 23, 42, 0.08);
+	box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+/* =====================================================
+   Sections & titles
+===================================================== */
+.admin-sommaire-reactjs .chapter-section + .chapter-section {
+	margin-top: 18px;
+	padding-top: 16px;
+	border-top: 1px dashed rgba(15, 23, 42, 0.18);
+}
+
+.admin-sommaire-reactjs .section-title {
+	margin: 0 0 10px;
+	font-size: 1.5rem;
+	font-weight: 800;
+	color: var(--asr-text);
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.admin-sommaire-reactjs .section-title::before {
+	content: "";
+	width: 10px;
+	height: 10px;
+	border-radius: 3px;
+	background: #f97316;
+	box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
+}
+
+/* =====================================================
+   Admin titlebar (small header inside)
+===================================================== */
+.admin-sommaire-reactjs__titlebar {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: var(--asdf-gap);
-	margin-bottom: 0.75rem;
+	gap: var(--asr-gap);
+	margin-bottom: 0; /* on utilise le chapter-header */
 }
 
-.admin-sommaire-dartflutter__cardHeader {
+/* =====================================================
+   Card header row (title + add button)
+===================================================== */
+.admin-sommaire-reactjs__cardHeader {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: var(--asdf-gap);
+	gap: var(--asr-gap);
 }
 
-.admin-sommaire-dartflutter__tableWrap {
+/* =====================================================
+   Table wrapper
+===================================================== */
+.admin-sommaire-reactjs__tableWrap {
 	width: 100%;
 	overflow-x: auto;
+	border-radius: 12px;
+	border: 1px solid rgba(15, 23, 42, 0.08);
 }
 
-.admin-sommaire-dartflutter__colOrder {
+/* Optionnel : un style un peu plus “propre” pour la table */
+.admin-sommaire-reactjs table {
+	margin: 0;
+}
+
+.admin-sommaire-reactjs thead th {
+	white-space: nowrap;
+	background: rgba(15, 23, 42, 0.04);
+}
+
+.admin-sommaire-reactjs tbody td {
+	vertical-align: middle;
+}
+
+.admin-sommaire-reactjs__colOrder {
 	width: 90px;
 	white-space: nowrap;
 }
 
-.admin-sommaire-dartflutter__colActive {
+.admin-sommaire-reactjs__colActive {
 	width: 80px;
 	white-space: nowrap;
 }
 
-.admin-sommaire-dartflutter__colActions {
+.admin-sommaire-reactjs__colActions {
 	width: 260px;
 	white-space: nowrap;
 }
 
-.admin-sommaire-dartflutter__orderBtns {
+.admin-sommaire-reactjs__orderBtns {
 	display: flex;
 	gap: 0.35rem;
 }
 
-.admin-sommaire-dartflutter__actions {
+.admin-sommaire-reactjs__actions {
 	display: flex;
 	gap: 0.5rem;
 	justify-content: flex-end;
 	flex-wrap: wrap;
 }
 
-.admin-sommaire-dartflutter__code {
+.admin-sommaire-reactjs__code {
 	font-size: 0.9em;
+	padding: 2px 6px;
+	border-radius: 8px;
+	background: rgba(15, 23, 42, 0.06);
+	border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+/* =====================================================
+   Navigation (boutons)
+===================================================== */
+.chapter-navigation {
+	margin-top: 26px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 14px;
+	flex-wrap: wrap;
+}
+
+.chapter-navigation .btn-prev,
+.chapter-navigation .btn-next {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	min-width: 190px;
+	padding: 12px 18px;
+	border-radius: 14px;
+	font-weight: 800;
+	letter-spacing: 0.2px;
+	border: 0;
+	text-decoration: none;
+	cursor: pointer;
+	transition: transform 120ms ease, box-shadow 160ms ease, filter 160ms ease,
+		opacity 160ms ease;
+}
+
+.chapter-navigation .btn-next {
+	color: #fff;
+	background: linear-gradient(
+		135deg,
+		var(--asr-accent-1) 0%,
+		var(--asr-accent-2) 55%,
+		#1d4ed8 100%
+	);
+	box-shadow: 0 14px 30px rgba(37, 99, 235, 0.25),
+		0 8px 18px rgba(14, 165, 233, 0.2);
+}
+
+.chapter-navigation .btn-prev {
+	color: var(--asr-text);
+	background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+	border: 1px solid rgba(15, 23, 42, 0.1);
+	box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+}
+
+.chapter-navigation .btn-next:hover,
+.chapter-navigation .btn-prev:hover {
+	transform: translateY(-1px);
+	filter: brightness(1.03);
+}
+
+.chapter-navigation .btn-next:active,
+.chapter-navigation .btn-prev:active {
+	transform: translateY(0px) scale(0.99);
 }

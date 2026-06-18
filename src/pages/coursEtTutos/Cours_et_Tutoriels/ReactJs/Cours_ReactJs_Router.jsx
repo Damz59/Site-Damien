@@ -5,15 +5,15 @@ import { Container, Alert } from "react-bootstrap";
 import Banniere from "../../../../components/Banniere/Banniere.jsx";
 import BanniereIsConnected from "../../../../components/Banniere_isConnected/Banniere_isConnected.jsx";
 
-import Chapitre_ReactJs_Introduction from "./chapitres/Chapitre_ReactJs_Introduction.jsx";
-import Chapitre_ReactJs_JSX_Et_Composants from "./chapitres/Chapitre_ReactJs_JSX_Et_Composants.jsx";
+import Chapitre_01_ReactJs_Introduction from "./chapitres/Chapitre_01_ReactJs_Introduction.jsx";
+import Chapitre_02_ReactJs_JSX_Et_Composants from "./chapitres/Chapitre_02_ReactJs_JSX_Et_Composants.jsx";
 
 export default function Cours_ReactJs_Router({ authUser }) {
 	const { chapterSlug } = useParams();
 
 	const registry = {
-		introduction: Chapitre_ReactJs_Introduction,
-		"jsx-et-composants": Chapitre_ReactJs_JSX_Et_Composants,
+		"introduction": Chapitre_01_ReactJs_Introduction,
+		"jsx-et-composants": Chapitre_02_ReactJs_JSX_Et_Composants,
 	};
 
 	const ChapterComponent = registry[chapterSlug];

@@ -1,16 +1,87 @@
-/* Admin_CoursEtTutos.css */
+/* Admin_CoursEtTutos.css
+   Styles spécifiques à la page d'administration des Cours & Tutoriels
+   (le layout principal reste géré par Bootstrap)
+*/
 
-.admin-cet-logo {
-	width: 64px;
-	height: 64px;
-	object-fit: contain;
-	display: block;
+:root {
+	--admin-cet-logo-size: 46px;
+	--admin-cet-logo-radius: 10px;
 }
 
+/* Empêche le logo de "casser" la hauteur des lignes */
+.admin-cet-logo {
+	width: var(--admin-cet-logo-size);
+	height: var(--admin-cet-logo-size);
+	object-fit: contain;
+	border-radius: var(--admin-cet-logo-radius);
+
+	background: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	padding: 6px;
+
+	/* petit shadow doux */
+	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+/* Variante si image absente (si tu veux l'ajouter plus tard dans le JSX) */
 .admin-cet-logoPlaceholder {
-	width: 64px;
-	height: 64px;
-	border: 1px dashed #cbd5e1;
-	border-radius: 8px;
-	background: #f8fafc;
+	width: var(--admin-cet-logo-size);
+	height: var(--admin-cet-logo-size);
+	border-radius: var(--admin-cet-logo-radius);
+	background: rgba(0, 0, 0, 0.04);
+	border: 1px dashed rgba(0, 0, 0, 0.15);
+}
+
+/* Lisibilité des ListGroup dans les cards */
+.card .list-group-item {
+	/* évite que tout colle visuellement quand tu as beaucoup de boutons */
+	padding-top: 0.85rem;
+	padding-bottom: 0.85rem;
+}
+
+/* Le bloc "infos" du cours (titre + slug + desc) */
+.card .list-group-item strong {
+	line-height: 1.2;
+}
+
+/* Évite que les longs slugs / URL logo débordent */
+.card .list-group-item .text-muted.small,
+.card .list-group-item .text-muted.small * {
+	word-break: break-word;
+	overflow-wrap: anywhere;
+}
+
+/* Les boutons d'actions à droite : propre quand ça wrap */
+.card .list-group-item .d-flex.gap-2.flex-wrap {
+	row-gap: 0.4rem;
+}
+
+/* Un peu de confort sur les boutons admin */
+.card .list-group-item .btn.btn-sm {
+	white-space: nowrap;
+}
+
+/* Améliore la lisibilité des headers de section */
+.card > .card-header {
+	letter-spacing: 0.2px;
+}
+
+/* Optionnel : un style un peu plus "admin" pour les titres */
+h1 {
+	font-weight: 700;
+}
+
+/* Optionnel : sur mobile, on évite que les items deviennent trop serrés */
+@media (max-width: 576px) {
+	:root {
+		--admin-cet-logo-size: 42px;
+	}
+
+	.card .list-group-item {
+		align-items: flex-start !important;
+	}
+
+	.card .list-group-item .d-flex.align-items-center.gap-3 {
+		align-items: flex-start !important;
+	}
 }

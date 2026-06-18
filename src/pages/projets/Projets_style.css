@@ -1,0 +1,166 @@
+/* Projets_style.css */
+/* =====================================================
+   Anti-superposition (header fixe/sticky)
+===================================================== */
+:root {
+	--app-header-height: 80px; /* ajuste si besoin */
+}
+
+/* =====================================================
+   Base layout (page)
+===================================================== */
+.page-content {
+	width: 100%;
+	max-width: none;
+	margin: 0;
+
+	/* Décalage vers le bas pour éviter que le header recouvre le titre */
+	padding: calc(24px + var(--app-header-height)) 16px 48px;
+}
+
+/* =====================================================
+   "Chapter header" look pour le titre Mes Projets
+   (tu utilises ton h1 existant)
+===================================================== */
+.page-projects-title {
+	margin: 18px 0 18px;
+	padding: 14px 16px;
+	border-radius: 14px;
+	background: linear-gradient(135deg, #0ea5e9 0%, #22c55e 100%);
+	color: #fff;
+	box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2);
+
+	/* ton h1 a déjà border-bottom : on l'annule ici pour éviter doublon */
+	border-bottom: 0 !important;
+}
+
+.page-projects-title {
+	font-size: 1.8rem; /* style chapitre */
+	font-weight: 800;
+	letter-spacing: 0.2px;
+	display: inline-block; /* garde ton d-inline-block */
+}
+
+/* Responsive titre */
+@media (max-width: 576px) {
+	.page-projects-title {
+		font-size: 1.35rem;
+	}
+}
+
+/* =====================================================
+   Cards projets = "chapter-card"
+===================================================== */
+.project-card {
+	margin-top: 0; /* géré par g-4 */
+	padding: 0; /* bootstrap gère via card-body */
+	border-radius: 16px;
+	background: #ffffff;
+	border: 1px solid rgba(15, 23, 42, 0.08);
+	box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+
+	transition:
+		transform 120ms ease,
+		box-shadow 160ms ease,
+		filter 160ms ease,
+		border-color 160ms ease;
+}
+
+.project-card:hover {
+	transform: translateY(-2px);
+	filter: brightness(1.01);
+	box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+	border-color: rgba(14, 165, 233, 0.35);
+}
+
+/* Card body spacing */
+.project-card .card-body {
+	padding: 18px;
+}
+
+/* Card title */
+.project-card .card-title {
+	margin: 0 0 10px;
+	font-size: 1.05rem;
+	font-weight: 800;
+	color: #0f172a;
+
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+/* petit marqueur carré comme tes sections */
+.project-card .card-title::before {
+	content: "";
+	width: 10px;
+	height: 10px;
+	border-radius: 3px;
+	background: #f97316; /* orange-500 */
+	box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.18);
+}
+
+/* texte */
+.project-card .card-text {
+	margin: 0 0 12px;
+	line-height: 1.55;
+	color: #0f172a;
+	opacity: 0.9;
+}
+
+/* code inline plus joli */
+.project-card code {
+	padding: 2px 6px;
+	border-radius: 8px;
+	background: rgba(15, 23, 42, 0.06);
+	border: 1px solid rgba(15, 23, 42, 0.08);
+	font-size: 0.95em;
+}
+
+/* =====================================================
+   Badges (chips)
+===================================================== */
+.project-badges .badge {
+	font-weight: 800;
+	letter-spacing: 0.2px;
+	border-radius: 999px;
+	padding: 0.45em 0.65em;
+}
+
+/* =====================================================
+   Bouton "Voir le site" (style proche btn-next)
+===================================================== */
+.project-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+
+	padding: 10px 14px;
+	border-radius: 14px;
+	font-weight: 800;
+	letter-spacing: 0.2px;
+	border: 0;
+	text-decoration: none;
+
+	color: #fff !important;
+	background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 55%, #1d4ed8 100%);
+	box-shadow:
+		0 14px 30px rgba(37, 99, 235, 0.25),
+		0 8px 18px rgba(14, 165, 233, 0.2);
+
+	transition:
+		transform 120ms ease,
+		box-shadow 160ms ease,
+		filter 160ms ease,
+		opacity 160ms ease;
+}
+
+.project-link:hover {
+	transform: translateY(-1px);
+	filter: brightness(1.03);
+}
+
+.project-link:active {
+	transform: translateY(0px) scale(0.99);
+}
